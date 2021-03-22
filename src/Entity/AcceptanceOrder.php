@@ -2,84 +2,60 @@
 
 namespace App\Entity;
 
+use App\Repository\AcceptanceOrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * AcceptanceOrder
- *
- * @ORM\Table(name="Acceptance_Order", indexes={@ORM\Index(name="fk_acceptance_2", columns={"buyer_id"}), @ORM\Index(name="purchase_order_id", columns={"purchase_order_id"}), @ORM\Index(name="fk_acceptance_1", columns={"seller_id"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass=AcceptanceOrderRepository::class)
  */
 class AcceptanceOrder
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="acceptance_order_id", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
      */
-    private $acceptanceOrderId;
+    private $id;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(name="subtotal", type="float", precision=7, scale=2, nullable=false)
-     */
-    private $subtotal;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="expected_arrive", type="date", nullable=false)
-     */
-    private $expectedArrive;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="date_done", type="date", nullable=false)
-     */
-    private $dateDone;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="status", type="integer", nullable=false)
-     */
-    private $status;
-
-    /**
-     * @var \Seller
-     *
-     * @ORM\ManyToOne(targetEntity="Seller")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="seller_id", referencedColumnName="seller_id")
-     * })
+     * @ORM\ManyToOne(targetEntity=Seller::class)
+     * @ORM\JoinColumn(nullable=false)
      */
     private $seller;
 
     /**
-     * @var \Buyer
-     *
-     * @ORM\ManyToOne(targetEntity="Buyer")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="buyer_id", referencedColumnName="buyer_id")
-     * })
+     * @ORM\ManyToOne(targetEntity=Buyer::class)
+     * @ORM\JoinColumn(nullable=false)
      */
     private $buyer;
 
     /**
-     * @var \PurchaseOrder
-     *
-     * @ORM\ManyToOne(targetEntity="PurchaseOrder")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="purchase_order_id", referencedColumnName="purchase_order_id")
-     * })
+     * @ORM\ManyToOne(targetEntity=PurchaseOrder::class)
+     * @ORM\JoinColumn(nullable=false)
      */
     private $purchaseOrder;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $subtotal;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $expected_arrive_date;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $date_done;
+
+    /**
+     * @ORM\Column(type="smallint")
+     */
+    private $status;
 
     /**
      * @ORM\OneToMany(targetEntity=DetailAcceptanceOrder::class, mappedBy="acceptanceOrder")
@@ -89,6 +65,95 @@ class AcceptanceOrder
     public function __construct()
     {
         $this->detailAcceptanceOrders = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getSeller(): ?Seller
+    {
+        return $this->seller;
+    }
+
+    public function setSeller(?Seller $seller): self
+    {
+        $this->Seller = $seller;
+
+        return $this;
+    }
+
+    public function getBuyer(): ?Buyer
+    {
+        return $this->buyer;
+    }
+
+    public function setBuyer(?Buyer $buyer): self
+    {
+        $this->buyer = $buyer;
+
+        return $this;
+    }
+
+    public function getPurchaseOrder(): ?PurchaseOrder
+    {
+        return $this->purchaseOrder;
+    }
+
+    public function setPurchaseOrder(?PurchaseOrder $purchaseOrder): self
+    {
+        $this->purchaseOrder = $purchaseOrder;
+
+        return $this;
+    }
+
+    public function getSubtotal(): ?float
+    {
+        return $this->subtotal;
+    }
+
+    public function setSubtotal(?float $subtotal): self
+    {
+        $this->subtotal = $subtotal;
+
+        return $this;
+    }
+
+    public function getExpectedArriveDate(): ?\DateTimeInterface
+    {
+        return $this->expected_arrive_date;
+    }
+
+    public function setExpectedArriveDate(?\DateTimeInterface $expected_arrive_date): self
+    {
+        $this->expected_arrive_date = $expected_arrive_date;
+
+        return $this;
+    }
+
+    public function getDateDone(): ?\DateTimeInterface
+    {
+        return $this->date_done;
+    }
+
+    public function setDateDone(\DateTimeInterface $date_done): self
+    {
+        $this->date_done = $date_done;
+
+        return $this;
+    }
+
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    public function setStatus(int $status): self
+    {
+        $this->status = $status;
+
+        return $this;
     }
 
     /**
@@ -120,6 +185,4 @@ class AcceptanceOrder
 
         return $this;
     }
-
-
 }

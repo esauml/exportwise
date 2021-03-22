@@ -2,41 +2,58 @@
 
 namespace App\Entity;
 
+use App\Repository\SellerRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Seller
- *
- * @ORM\Table(name="Seller", indexes={@ORM\Index(name="enterprise_id", columns={"enterprise_id"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass=SellerRepository::class)
  */
 class Seller
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="seller_id", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
      */
-    private $sellerId;
+    private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="contact_name", type="string", length=30, nullable=false)
+     * @ORM\Column(type="string", length=40)
      */
-    private $contactName;
+    private $contact_name;
 
     /**
-     * @var \Enterprise
-     *
-     * @ORM\ManyToOne(targetEntity="Enterprise")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="enterprise_id", referencedColumnName="enterprise_id")
-     * })
+     * @ORM\ManyToOne(targetEntity=Enterprise::class)
+     * @ORM\JoinColumn(nullable=false)
      */
     private $enterprise;
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
+    public function getContactName(): ?string
+    {
+        return $this->contact_name;
+    }
+
+    public function setContactName(string $contact_name): self
+    {
+        $this->contact_name = $contact_name;
+
+        return $this;
+    }
+
+    public function getEnterpriseId(): ?Enterprise
+    {
+        return $this->enterprise;
+    }
+
+    public function setEnterpriseId(?Enterprise $enterprise): self
+    {
+        $this->enterprise = $enterprise;
+
+        return $this;
+    }
 }

@@ -2,60 +2,44 @@
 
 namespace App\Entity;
 
+use App\Repository\PurchaseOrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * PurchaseOrder
- *
- * @ORM\Table(name="Purchase_Order", indexes={@ORM\Index(name="fk_purchase_order_seller", columns={"seller_id"}), @ORM\Index(name="fk_purchase_order_buyer_id", columns={"buyer_id"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass=PurchaseOrderRepository::class)
  */
 class PurchaseOrder
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="purchase_order_id", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
      */
-    private $purchaseOrderId;
+    private $id;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="date_done", type="integer", nullable=false)
-     */
-    private $dateDone;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="status", type="integer", nullable=false)
-     */
-    private $status = '0';
-
-    /**
-     * @var \Buyer
-     *
-     * @ORM\ManyToOne(targetEntity="Buyer")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="buyer_id", referencedColumnName="buyer_id")
-     * })
+     * @ORM\ManyToOne(targetEntity=Buyer::class)
+     * @ORM\JoinColumn(nullable=false)
      */
     private $buyer;
 
     /**
-     * @var \Seller
-     *
-     * @ORM\ManyToOne(targetEntity="Seller")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="seller_id", referencedColumnName="seller_id")
-     * })
+     * @ORM\ManyToOne(targetEntity=Seller::class)
+     * @ORM\JoinColumn(nullable=false)
      */
     private $seller;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $date_done;
+
+    /**
+     * @ORM\Column(type="smallint")
+     */
+    private $status;
 
     /**
      * @ORM\OneToMany(targetEntity=DetailPurchaseOrder::class, mappedBy="purchaseOrder")
@@ -65,6 +49,59 @@ class PurchaseOrder
     public function __construct()
     {
         $this->detailPurchaseOrders = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getBuyerId(): ?Buyer
+    {
+        return $this->buyer;
+    }
+
+    public function setBuyerId(?Buyer $buyer): self
+    {
+        $this->buyer = $buyer;
+
+        return $this;
+    }
+
+    public function getSellerId(): ?Seller
+    {
+        return $this->seller;
+    }
+
+    public function setSellerId(?Seller $seller): self
+    {
+        $this->seller = $seller;
+
+        return $this;
+    }
+
+    public function getDateDone(): ?\DateTimeInterface
+    {
+        return $this->date_done;
+    }
+
+    public function setDateDone(\DateTimeInterface $date_done): self
+    {
+        $this->date_done = $date_done;
+
+        return $this;
+    }
+
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    public function setStatus(int $status): self
+    {
+        $this->status = $status;
+
+        return $this;
     }
 
     /**
@@ -96,6 +133,4 @@ class PurchaseOrder
 
         return $this;
     }
-
-
 }

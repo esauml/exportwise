@@ -2,46 +2,34 @@
 
 namespace App\Entity;
 
+use App\Repository\DetailPurchaseOrderRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * DetailPurchaseOrder
- *
- * @ORM\Table(name="Detail_Purchase_Order", indexes={@ORM\Index(name="fk_detail_pruchase_order_product", columns={"product_id"}), @ORM\Index(name="fk_detail_purchase_order_purchase_order", columns={"purchase_order_id"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass=DetailPurchaseOrderRepository::class)
  */
 class DetailPurchaseOrder
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="detail_purchase_order_id", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
      */
-    private $detailPurchaseOrderId;
+    private $id;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(name="quantity", type="float", precision=10, scale=0, nullable=false)
+     * @ORM\Column(type="float")
      */
     private $quantity;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="unit", type="string", length=10, nullable=false)
+     * @ORM\Column(type="string", length=10)
      */
     private $unit;
 
     /**
-     * @var \Product
-     *
-     * @ORM\ManyToOne(targetEntity="Product")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="product_id", referencedColumnName="product_id")
-     * })
+     * @ORM\ManyToOne(targetEntity=Product::class)
+     * @ORM\JoinColumn(nullable=false)
      */
     private $product;
 
@@ -50,6 +38,47 @@ class DetailPurchaseOrder
      * @ORM\JoinColumn(nullable=false)
      */
     private $purchaseOrder;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getQuantity(): ?float
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(float $quantity): self
+    {
+        $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    public function getUnit(): ?string
+    {
+        return $this->unit;
+    }
+
+    public function setUnit(string $unit): self
+    {
+        $this->unit = $unit;
+
+        return $this;
+    }
+
+    public function getProductId(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProductId(?Product $product): self
+    {
+        $this->product = $product;
+
+        return $this;
+    }
 
     public function getPurchaseOrder(): ?PurchaseOrder
     {
@@ -62,6 +91,4 @@ class DetailPurchaseOrder
 
         return $this;
     }
-
-
 }
