@@ -21,3 +21,9 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+
+### IMPORTANT !! ##
+# <vscode settings>
+/.vscode
+# DATBASE environment
+.env
