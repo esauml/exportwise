@@ -2,8 +2,9 @@
 
 namespace App\Entity;
 
-use App\Repository\ProductRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Enterprise;
 
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
@@ -41,6 +42,19 @@ class Product
      * @ORM\Column(type="smallint")
      */
     private $status;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Enterprise::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $seller;
+
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 
     public function getId(): ?int
     {
@@ -103,6 +117,18 @@ class Product
     public function setStatus(int $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getSeller(): ?Enterprise
+    {
+        return $this->seller;
+    }
+
+    public function setSeller(?Enterprise $seller): self
+    {
+        $this->seller = $seller;
 
         return $this;
     }

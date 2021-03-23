@@ -1,6 +1,8 @@
 <?php
+
 namespace App\Controller;
 
+use App\Entity\Buyer;
 use App\Entity\Enterprise;
 use App\Form\EnterpriseRegistrationType;
 use App\Security\ExportWiseAuthAuthenticator;
@@ -27,7 +29,6 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             // encode the plain password
             $user->setPassword(
                 $passwordEncoder->encodePassword(
@@ -35,6 +36,15 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
+            if ($form->get('role')->getData() == true) {
+                $user->setRoles(
+                    ['ROLE_ADMIN']
+                );
+            } else {
+                $user->setRoles(
+                    ['ROLE_USER']
+                );
+            }
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);

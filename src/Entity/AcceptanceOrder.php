@@ -20,13 +20,13 @@ class AcceptanceOrder
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Seller::class)
+     * @ORM\ManyToOne(targetEntity=Enterprise::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $seller;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Buyer::class)
+     * @ORM\ManyToOne(targetEntity=Enterprise::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $buyer;
@@ -72,24 +72,24 @@ class AcceptanceOrder
         return $this->id;
     }
 
-    public function getSeller(): ?Seller
+    public function getSeller(): ?Enterprise
     {
         return $this->seller;
     }
 
-    public function setSeller(?Seller $seller): self
+    public function setSeller(?Enterprise $seller): self
     {
-        $this->Seller = $seller;
+        $this->seller = $seller;
 
         return $this;
     }
 
-    public function getBuyer(): ?Buyer
+    public function getBuyer(): ?Enterprise
     {
         return $this->buyer;
     }
 
-    public function setBuyer(?Buyer $buyer): self
+    public function setBuyer(?Enterprise $buyer): self
     {
         $this->buyer = $buyer;
 
@@ -125,8 +125,9 @@ class AcceptanceOrder
         return $this->expected_arrive_date;
     }
 
-    public function setExpectedArriveDate(?\DateTimeInterface $expected_arrive_date): self
-    {
+    public function setExpectedArriveDate(
+        ?\DateTimeInterface $expected_arrive_date
+    ): self {
         $this->expected_arrive_date = $expected_arrive_date;
 
         return $this;
@@ -164,8 +165,9 @@ class AcceptanceOrder
         return $this->detailAcceptanceOrders;
     }
 
-    public function addDetailAcceptanceOrder(DetailAcceptanceOrder $detailAcceptanceOrder): self
-    {
+    public function addDetailAcceptanceOrder(
+        DetailAcceptanceOrder $detailAcceptanceOrder
+    ): self {
         if (!$this->detailAcceptanceOrders->contains($detailAcceptanceOrder)) {
             $this->detailAcceptanceOrders[] = $detailAcceptanceOrder;
             $detailAcceptanceOrder->setAcceptanceOrder($this);
@@ -174,9 +176,12 @@ class AcceptanceOrder
         return $this;
     }
 
-    public function removeDetailAcceptanceOrder(DetailAcceptanceOrder $detailAcceptanceOrder): self
-    {
-        if ($this->detailAcceptanceOrders->removeElement($detailAcceptanceOrder)) {
+    public function removeDetailAcceptanceOrder(
+        DetailAcceptanceOrder $detailAcceptanceOrder
+    ): self {
+        if (
+            $this->detailAcceptanceOrders->removeElement($detailAcceptanceOrder)
+        ) {
             // set the owning side to null (unless already changed)
             if ($detailAcceptanceOrder->getAcceptanceOrder() === $this) {
                 $detailAcceptanceOrder->setAcceptanceOrder(null);

@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Enterprise;
 use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManager;
@@ -26,32 +27,16 @@ class ProductRepository extends ServiceEntityRepository
         $this->manager = $manager;
     }
 
-    // /**
-    //  * @return Product[] Returns an array of Product objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function create(Product $product)
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        # code...
+        $this->manager->persist($product);
+        $this->manager->flush();
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Product
+    public function update(Product $product)
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        # code...
+        $this->manager->persist($product);
     }
-    */
 }

@@ -20,13 +20,13 @@ class PurchaseOrder
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Buyer::class)
+     * @ORM\ManyToOne(targetEntity=Enterprise::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $buyer;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Seller::class)
+     * @ORM\ManyToOne(targetEntity=Enterprise::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $seller;
@@ -56,24 +56,24 @@ class PurchaseOrder
         return $this->id;
     }
 
-    public function getBuyerId(): ?Buyer
+    public function getBuyerId(): ?Enterprise
     {
         return $this->buyer;
     }
 
-    public function setBuyerId(?Buyer $buyer): self
+    public function setBuyerId(?Enterprise $buyer): self
     {
         $this->buyer = $buyer;
 
         return $this;
     }
 
-    public function getSellerId(): ?Seller
+    public function getSellerId(): ?Enterprise
     {
         return $this->seller;
     }
 
-    public function setSellerId(?Seller $seller): self
+    public function setSellerId(?Enterprise $seller): self
     {
         $this->seller = $seller;
 
@@ -112,8 +112,9 @@ class PurchaseOrder
         return $this->detailPurchaseOrders;
     }
 
-    public function addDetailPurchaseOrder(DetailPurchaseOrder $detailPurchaseOrder): self
-    {
+    public function addDetailPurchaseOrder(
+        DetailPurchaseOrder $detailPurchaseOrder
+    ): self {
         if (!$this->detailPurchaseOrders->contains($detailPurchaseOrder)) {
             $this->detailPurchaseOrders[] = $detailPurchaseOrder;
             $detailPurchaseOrder->setPurchaseOrder($this);
@@ -122,8 +123,9 @@ class PurchaseOrder
         return $this;
     }
 
-    public function removeDetailPurchaseOrder(DetailPurchaseOrder $detailPurchaseOrder): self
-    {
+    public function removeDetailPurchaseOrder(
+        DetailPurchaseOrder $detailPurchaseOrder
+    ): self {
         if ($this->detailPurchaseOrders->removeElement($detailPurchaseOrder)) {
             // set the owning side to null (unless already changed)
             if ($detailPurchaseOrder->getPurchaseOrder() === $this) {
