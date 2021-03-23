@@ -4,10 +4,12 @@ namespace App\Entity;
 
 use App\Repository\EnterpriseRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=EnterpriseRepository::class)
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
 class Enterprise implements UserInterface
 {
@@ -53,6 +55,13 @@ class Enterprise implements UserInterface
      * @ORM\Column(type="string", length=30, nullable=true)
      */
     private $phone;
+
+    public function __construct()
+    {
+        // passive set's on user create
+        $this->setRoles(['ROLE_BUYER']);
+        $this->setLogo('####');
+    }
 
     public function getId(): ?int
     {
