@@ -2,11 +2,8 @@
 
 namespace App\Repository;
 
-use App\Entity\Enterprise;
 use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,26 +14,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ProductRepository extends ServiceEntityRepository
 {
-    private $manager;
-
-    public function __construct(
-        ManagerRegistry $registry,
-        EntityManagerInterface $manager
-    ) {
+    public function __construct(ManagerRegistry $registry)
+    {
         parent::__construct($registry, Product::class);
-        $this->manager = $manager;
-    }
-
-    public function create(Product $product)
-    {
-        # code...
-        $this->manager->persist($product);
-        $this->manager->flush();
-    }
-
-    public function update(Product $product)
-    {
-        # code...
-        $this->manager->persist($product);
     }
 }

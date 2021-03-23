@@ -56,6 +56,11 @@ class Enterprise implements UserInterface
      */
     private $phone;
 
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $contactName;
+
     public function __construct()
     {
         // passive set's on user create
@@ -195,6 +200,18 @@ class Enterprise implements UserInterface
     public function setPhone(?string $phone): self
     {
         $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function getContactName(): ?string
+    {
+        return $this->contactName;
+    }
+
+    public function setContactName(?string $contactName): self
+    {
+        $this->contactName = $contactName;
 
         return $this;
     }

@@ -2,10 +2,9 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Enterprise;
-
+use App\Repository\ProductRepository;
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
  */
@@ -44,7 +43,7 @@ class Product
     private $status;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Enterprise::class)
+     * @ORM\ManyToOne(targetEntity=Enterprise::class, cascade={"all"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $seller;
