@@ -20,7 +20,9 @@ use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticato
 use Symfony\Component\Security\Guard\PasswordAuthenticatedInterface;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
-class ExportWiseAuthAuthenticator extends AbstractFormLoginAuthenticator implements PasswordAuthenticatedInterface
+class ExportWiseAuthAuthenticator
+    extends AbstractFormLoginAuthenticator
+    implements PasswordAuthenticatedInterface
 {
     use TargetPathTrait;
 
@@ -31,8 +33,12 @@ class ExportWiseAuthAuthenticator extends AbstractFormLoginAuthenticator impleme
     private $csrfTokenManager;
     private $passwordEncoder;
 
-    public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder)
-    {
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        UrlGeneratorInterface $urlGenerator,
+        CsrfTokenManagerInterface $csrfTokenManager,
+        UserPasswordEncoderInterface $passwordEncoder
+    ) {
         $this->entityManager = $entityManager;
         $this->urlGenerator = $urlGenerator;
         $this->csrfTokenManager = $csrfTokenManager;
@@ -41,8 +47,8 @@ class ExportWiseAuthAuthenticator extends AbstractFormLoginAuthenticator impleme
 
     public function supports(Request $request)
     {
-        return self::LOGIN_ROUTE === $request->attributes->get('_route')
-            && $request->isMethod('POST');
+        return self::LOGIN_ROUTE === $request->attributes->get('_route') &&
+            $request->isMethod('POST');
     }
 
     public function getCredentials(Request $request)
@@ -52,10 +58,9 @@ class ExportWiseAuthAuthenticator extends AbstractFormLoginAuthenticator impleme
             'password' => $request->request->get('password'),
             'csrf_token' => $request->request->get('_csrf_token'),
         ];
-        $request->getSession()->set(
-            Security::LAST_USERNAME,
-            $credentials['email']
-        );
+        $request
+            ->getSession()
+            ->set(Security::LAST_USERNAME, $credentials['email']);
 
         return $credentials;
     }
@@ -67,11 +72,15 @@ class ExportWiseAuthAuthenticator extends AbstractFormLoginAuthenticator impleme
             throw new InvalidCsrfTokenException();
         }
 
-        $user = $this->entityManager->getRepository(Enterprise::class)->findOneBy(['email' => $credentials['email']]);
+        $user = $this->entityManager
+            ->getRepository(Enterprise::class)
+            ->findOneBy(['email' => $credentials['email']]);
 
         if (!$user) {
             // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException('Email could not be found.');
+            throw new CustomUserMessageAuthenticationException(
+                'Email could not be found.'
+            );
         }
 
         return $user;
@@ -79,7 +88,10 @@ class ExportWiseAuthAuthenticator extends AbstractFormLoginAuthenticator impleme
 
     public function checkCredentials($credentials, UserInterface $user)
     {
-        return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+        return $this->passwordEncoder->isPasswordValid(
+            $user,
+            $credentials['password']
+        );
     }
 
     /**
@@ -90,15 +102,23 @@ class ExportWiseAuthAuthenticator extends AbstractFormLoginAuthenticator impleme
         return $credentials['password'];
     }
 
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey)
-    {
-        if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
+    public function onAuthenticationSuccess(
+        Request $request,
+        TokenInterface $token,
+        string $providerKey
+    ) {
+        if (
+            $targetPath = $this->getTargetPath(
+                $request->getSession(),
+                $providerKey
+            )
+        ) {
             return new RedirectResponse($targetPath);
         }
 
         // For example : return new RedirectResponse($this->urlGenerator->generate('some_route'));
         // throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
-        return new RedirectResponse('home');
+        return new RedirectResponse('/');
     }
 
     protected function getLoginUrl()
