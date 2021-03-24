@@ -43,7 +43,7 @@ class Product
     private $status;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Enterprise::class, cascade={"all"})
+     * @ORM\ManyToOne(targetEntity=Enterprise::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $seller;
