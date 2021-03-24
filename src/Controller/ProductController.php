@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Enterprise;
 use App\Entity\Product;
+use App\Repository\ProductRepository;
+use stdClass;
 #use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,6 +18,13 @@ use Symfony\Component\Validator\Constraints\Json;
 
 class ProductController extends AbstractController
 {
+    private $repository;
+
+    public function __construct(ProductRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      * @Route("/api/products/get-all", name="products_get_all",
      * methods={"GET"})
@@ -33,6 +42,7 @@ class ProductController extends AbstractController
             #$jsonResponse['data'] = $data;
             foreach ($data as $dat) {
                 $jsonData[] = [
+                    'id' => $dat->getId(),
                     'name' => $dat->getName(),
                     'description' => $dat->getDescription(),
                     'price' => $dat->getPrice(),
@@ -67,26 +77,28 @@ class ProductController extends AbstractController
 
         //setting response messages
         $jsonResponse = [];
-        $jsonData = [];
         if (!empty($data)) {
             $jsonResponse['status'] = 'ok';
             #$jsonResponse['data'] = $data;
-            foreach ($data as $dat) {
-                $jsonData[] = [
-                    'name' => $dat->getName(),
-                    'description' => $dat->getDescription(),
-                    'price' => $dat->getPrice(),
-                    'image' => $dat->getImage(),
-                    'status' => $dat->getStatus(),
-                    'seller' => [
-                        'id' => $dat->getSeller()->getId(),
-                        'company_name' => $dat->getSeller()->getCompanyName(),
-                        'logo' => $dat->getSeller()->getLogo(),
-                        'country' => $dat->getSeller()->getCountry(),
-                        'contact_name' => $dat->getSeller()->getContactName(),
-                    ],
-                ];
-            }
+
+            $jsonData = new stdClass(); // default object
+            $jsonData->id = $data->getId();
+            $jsonData->name = $data->getName();
+            $jsonData->description = $data->getDescription();
+            $jsonData->price = $data->getPrice();
+            $jsonData->image = $data->getImage();
+            $jsonData->status = $data->getStatus();
+            $jsonData->seller = new stdClass(); // default object
+            $jsonData->seller->id = $data->getSeller()->getId();
+            $jsonData->seller->company_name = $data
+                ->getSeller()
+                ->getCompanyName();
+            $jsonData->seller->logo = $data->getSeller()->getLogo();
+            $jsonData->seller->country = $data->getSeller()->getCountry();
+            $jsonData->seller->contact_name = $data
+                ->getSeller()
+                ->getContactName();
+
             $jsonResponse['data'] = $jsonData;
         } else {
             $jsonResponse['status'] = 'error';
@@ -101,8 +113,7 @@ class ProductController extends AbstractController
      */
     public function getAllbyEnterprise($id): JsonResponse
     {
-        $em = $this->getDoctrine()->getManager();
-        $data = $em->getRepository(Product::class)->findBy(['seller' => $id]);
+        $data = $this->repository->findBy(['seller' => $id]);
 
         //setting response messages
         $jsonResponse = [];
@@ -112,6 +123,7 @@ class ProductController extends AbstractController
             #$jsonResponse['data'] = $data;
             foreach ($data as $dat) {
                 $jsonData[] = [
+                    'id' => $dat->getId(),
                     'name' => $dat->getName(),
                     'description' => $dat->getDescription(),
                     'price' => $dat->getPrice(),
@@ -200,9 +212,7 @@ class ProductController extends AbstractController
         $product->setStatus($status);
 
         // DB function
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($product);
-        $em->flush();
+        $this->repository->create($product);
 
         return new JsonResponse(
             ['status' => 'Customer created!'],
@@ -262,11 +272,10 @@ class ProductController extends AbstractController
             throw new NotFoundHttpException('Wrong id argument for Product');
         }
 
-        // get seller from db
-        $sellerEM = $this->getDoctrine()->getManager();
-        $auxSeller = $sellerEM
+        // get seller from db <Product>
+        $auxSeller = $this->getDoctrine()
             ->getRepository(Enterprise::class)
-            ->findOneBy(['seller' => $seller['id']]);
+            ->findOneBy(['id' => $seller['id']]);
         # check if null
         if ($auxSeller == null) {
             throw new NotFoundHttpException('Wrong id argument for Enterprise');
@@ -280,9 +289,7 @@ class ProductController extends AbstractController
         $product->setStatus($status);
 
         // DB function
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($product);
-        $em->flush();
+        $this->repository->update($product);
 
         return new JsonResponse(
             ['status' => 'Customer updated!'],
@@ -295,19 +302,18 @@ class ProductController extends AbstractController
      */
     public function delete($id): JsonResponse
     {
-        // find for existing <Product>
-        $em = $this->getDoctrine()->getRepository(Product::class);
-        $data = $em->findOneBy(['id' => $id]);
+        $data = $this->repository->findOneBy(['id' => $id]);
 
         // set return status based on <Product> existance
         $status = 'Operation Done: Delete successfull';
         if ($data == null) {
+            throw new NotFoundHttpException(
+                'Operation failure: no product existance'
+            );
             $status = 'Operation failure: no product existance';
         }
 
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($data);
-        $em->flush();
+        $this->repository->delete($data);
 
         // return JsonResponse
         return new JsonResponse(['status' => $status], Response::HTTP_OK);
