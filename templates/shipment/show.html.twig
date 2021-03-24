@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Shipment{% endblock %}
+
+{% block body %}
+    <h1>Shipment</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ shipment.id }}</td>
+            </tr>
+            <tr>
+                <th>Posting_date</th>
+                <td>{{ shipment.postingDate ? shipment.postingDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Arrive_date</th>
+                <td>{{ shipment.arriveDate ? shipment.arriveDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Comision</th>
+                <td>{{ shipment.comision }}</td>
+            </tr>
+            <tr>
+                <th>Total</th>
+                <td>{{ shipment.total }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ shipment.status }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('shipment_index') }}">back to list</a>
+
+    <a href="{{ path('shipment_edit', {'id': shipment.id}) }}">edit</a>
+
+    {{ include('shipment/_delete_form.html.twig') }}
+{% endblock %}

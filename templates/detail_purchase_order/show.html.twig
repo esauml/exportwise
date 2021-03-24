@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}DetailPurchaseOrder{% endblock %}
+
+{% block body %}
+    <h1>DetailPurchaseOrder</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ detail_purchase_order.id }}</td>
+            </tr>
+            <tr>
+                <th>Quantity</th>
+                <td>{{ detail_purchase_order.quantity }}</td>
+            </tr>
+            <tr>
+                <th>Unit</th>
+                <td>{{ detail_purchase_order.unit }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('detail_purchase_order_index') }}">back to list</a>
+
+    <a href="{{ path('detail_purchase_order_edit', {'id': detail_purchase_order.id}) }}">edit</a>
+
+    {{ include('detail_purchase_order/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}DetailPurchaseOrder index{% endblock %}
+
+{% block body %}
+    <h1>DetailPurchaseOrder index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Quantity</th>
+                <th>Unit</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for detail_purchase_order in detail_purchase_orders %}
+            <tr>
+                <td>{{ detail_purchase_order.id }}</td>
+                <td>{{ detail_purchase_order.quantity }}</td>
+                <td>{{ detail_purchase_order.unit }}</td>
+                <td>
+                    <a href="{{ path('detail_purchase_order_show', {'id': detail_purchase_order.id}) }}">show</a>
+                    <a href="{{ path('detail_purchase_order_edit', {'id': detail_purchase_order.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('detail_purchase_order_new') }}">Create new</a>
+{% endblock %}

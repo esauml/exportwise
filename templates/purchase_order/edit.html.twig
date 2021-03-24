@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit PurchaseOrder{% endblock %}
+
+{% block body %}
+    <h1>Edit PurchaseOrder</h1>
+
+    {{ include('purchase_order/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('purchase_order_index') }}">back to list</a>
+
+    {{ include('purchase_order/_delete_form.html.twig') }}
+{% endblock %}

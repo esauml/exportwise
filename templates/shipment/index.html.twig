@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Shipment index{% endblock %}
+
+{% block body %}
+    <h1>Shipment index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Posting_date</th>
+                <th>Arrive_date</th>
+                <th>Comision</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for shipment in shipments %}
+            <tr>
+                <td>{{ shipment.id }}</td>
+                <td>{{ shipment.postingDate ? shipment.postingDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ shipment.arriveDate ? shipment.arriveDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ shipment.comision }}</td>
+                <td>{{ shipment.total }}</td>
+                <td>{{ shipment.status }}</td>
+                <td>
+                    <a href="{{ path('shipment_show', {'id': shipment.id}) }}">show</a>
+                    <a href="{{ path('shipment_edit', {'id': shipment.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('shipment_new') }}">Create new</a>
+{% endblock %}
