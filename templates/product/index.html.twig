@@ -8,13 +8,15 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+{#<div class="example-wrapper">#}
+{#    {% for product in products %}#}
+{#        <tr>#}
+{#            <td>{{ dump(products) }}</td>#}
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/home/esau/uga/projects/exportwise/src/Controller/ProductController.php'|file_link(0) }}">src/Controller/ProductController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/home/esau/uga/projects/exportwise/templates/product/index.html.twig'|file_link(0) }}">templates/product/index.html.twig</a></code></li>
-    </ul>
+{#            <td>{{ product.name }}</td>#}
+
+
+{#        </tr>#}
+{#    {% endfor %}#}
 </div>
 {% endblock %}
