@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New DetailAcceptanceOrder{% endblock %}
+
+{% block body %}
+    <h1>Create new DetailAcceptanceOrder</h1>
+
+    {{ include('detail_acceptance_order/_form.html.twig') }}
+
+    <a href="{{ path('detail_acceptance_order_index') }}">back to list</a>
+{% endblock %}

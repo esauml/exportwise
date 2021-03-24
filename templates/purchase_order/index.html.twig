@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PurchaseOrder index{% endblock %}
+
+{% block body %}
+    <h1>PurchaseOrder index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date_done</th>
+                <th>Status</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for purchase_order in purchase_orders %}
+            <tr>
+                <td>{{ purchase_order.id }}</td>
+                <td>{{ purchase_order.dateDone ? purchase_order.dateDone|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ purchase_order.status }}</td>
+                <td>
+                    <a href="{{ path('purchase_order_show', {'id': purchase_order.id}) }}">show</a>
+                    <a href="{{ path('purchase_order_edit', {'id': purchase_order.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('purchase_order_new') }}">Create new</a>
+{% endblock %}

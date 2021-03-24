@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AcceptanceOrder index{% endblock %}
+
+{% block body %}
+    <h1>AcceptanceOrder index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Subtotal</th>
+                <th>Expected_arrive_date</th>
+                <th>Date_done</th>
+                <th>Status</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for acceptance_order in acceptance_orders %}
+            <tr>
+                <td>{{ acceptance_order.id }}</td>
+                <td>{{ acceptance_order.subtotal }}</td>
+                <td>{{ acceptance_order.expectedArriveDate ? acceptance_order.expectedArriveDate|date('Y-m-d') : '' }}</td>
+                <td>{{ acceptance_order.dateDone ? acceptance_order.dateDone|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ acceptance_order.status }}</td>
+                <td>
+                    <a href="{{ path('acceptance_order_show', {'id': acceptance_order.id}) }}">show</a>
+                    <a href="{{ path('acceptance_order_edit', {'id': acceptance_order.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('acceptance_order_new') }}">Create new</a>
+{% endblock %}
