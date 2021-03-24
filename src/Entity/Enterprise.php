@@ -215,4 +215,11 @@ class Enterprise implements UserInterface
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->getCompanyName();
+
+    }
+
 }
