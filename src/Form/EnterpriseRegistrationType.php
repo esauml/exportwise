@@ -12,8 +12,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class EnterpriseRegistrationType extends AbstractType
 {
@@ -31,12 +32,9 @@ class EnterpriseRegistrationType extends AbstractType
                 ],
             ])
             ->add('role', CheckboxType::class, [
+                'required' => false,
                 'mapped' => false,
-                'constraints' => [
-                    new IsTrue([
-                        'message' => 'type of role',
-                    ]),
-                ],
+
             ])
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
@@ -50,7 +48,7 @@ class EnterpriseRegistrationType extends AbstractType
                     new Length([
                         'min' => 6,
                         'minMessage' =>
-                            'Your password should be at least {{ limit }} characters',
+                        'Your password should be at least {{ limit }} characters',
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),
@@ -69,6 +67,10 @@ class EnterpriseRegistrationType extends AbstractType
                     'Philippines' => 'Philippines',
                 ],
             ])
+            /*  ->add('country', CountryType::class, [
+                'required' => true,
+               
+            ]) */
             ->add('phone', null, ['required' => true])
             ->add('contactName', null, ['required' => true]);
     }
