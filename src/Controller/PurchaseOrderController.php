@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use DateTime;
+use stdClass;
 use App\Entity\Product;
 use App\Entity\Enterprise;
 use App\Entity\PurchaseOrder;
@@ -23,6 +24,12 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class PurchaseOrderController extends AbstractController
 {
+    private $repository;
+
+    public function __construct(PurchaseOrderRepository $repository)
+    {
+        $this->repository = $repository;
+    }
     /**
      * @Route("/", name="purchase_order_index", methods={"GET"})
      */
@@ -42,7 +49,7 @@ class PurchaseOrderController extends AbstractController
         $status = '';
         $data = json_decode($request->getContent(), true);
 
-        if (empty($data['idSeller']) || empty($data['detailsPO'])) {
+        if (empty($data['detailsPO'])) {
             throw new NotFoundHttpException('Expecting mandatory parameters!');
         }
 
@@ -79,16 +86,8 @@ class PurchaseOrderController extends AbstractController
         $enterprise = $this->getDoctrine()
             ->getManager()
             ->getRepository(Enterprise::class)
-            ->find(1);
+            ->find($this->getUser()->getId());
         $po->setBuyerId($enterprise);
-
-        // find seller in db
-        $seller = $this->getDoctrine()
-            ->getManager()
-            ->getRepository(Enterprise::class)
-            ->find($data['idSeller']);
-
-        $po->setSellerId($seller);
 
         /*
             1: just created
@@ -122,29 +121,81 @@ class PurchaseOrderController extends AbstractController
 
         /*
             *   
-            ¨*idSeller,2
-            *status,
-            detailsPO: [
+            idSeller,2 !!!
+            detailsPO: [ 
+                {
                 if exists: id
                 quantity 3
-                prductId 2
-            ]
-            {
-                idSeller: 1,
-                detailsPO:{
-                    quantity: 3,
-                    productId:2
+                prductId 2 !!!
                 }
-            }
+            ]
         */
 
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($po);
         $entityManager->flush();
 
+        $jsonData = new stdClass(); // default object
+        $jsonData->id = $po->getId();
+        $jsonData->buyerId = $po->getBuyerId()->getId();
+        $jsonData->detailsPO = [];
+
+        foreach ($po->getDetailPurchaseOrders() as $dpo) {
+            $jsonDPO = new stdClass();
+            $jsonDPO->id = $dpo->getId();
+            $jsonDPO->quantity = $dpo->getQuantity();
+            $jsonDPO->productId = $dpo->getProductId()->getId();
+            array_push($jsonData->detailsPO, $jsonDPO);
+        }
+
         $jsonReturn = [
             'status' => $status,
-            'data' => json_decode($po->strval()),
+            'data' => $jsonData,
+        ];
+
+        return new JsonResponse($jsonReturn, Response::HTTP_OK);
+    }
+
+    /**
+     * @Route("/get", name="purchase_order_get_id", methods={"GET"})
+     */
+    public function getById(): JsonResponse
+    {
+        $id = $this->getDoctrine()
+            ->getManager()
+            ->getRepository(Enterprise::class)
+            ->find($this->getUser()->getId())
+            ->getId();
+
+        // $po = $this->repository->getLastById($id);
+        $po = $this->getDoctrine()
+            ->getManager()
+            ->getRepository(PurchaseOrder::class)
+            ->findOneBy(['buyer' => $id], ['id' => 'DESC']);
+
+        $status = 'Error';
+        if ($po == null) {
+            return new JsonResponse(['status' => $status], Response::HTTP_OK);
+        }
+
+        $status = 'correct';
+
+        $jsonData = new stdClass(); // default object
+        $jsonData->id = $po->getId();
+        $jsonData->buyerId = $po->getBuyerId()->getId();
+        $jsonData->detailsPO = [];
+
+        foreach ($po->getDetailPurchaseOrders() as $dpo) {
+            $jsonDPO = new stdClass();
+            $jsonDPO->id = $dpo->getId();
+            $jsonDPO->quantity = $dpo->getQuantity();
+            $jsonDPO->productId = $dpo->getProductId()->getId();
+            array_push($jsonData->detailsPO, $jsonDPO);
+        }
+
+        $jsonReturn = [
+            'status' => $status,
+            'data' => $jsonData,
         ];
 
         return new JsonResponse($jsonReturn, Response::HTTP_OK);

@@ -22,20 +22,18 @@ class ProductController2 extends AbstractController
      */
     public function index(ProductRepository $productRepository): Response
     {
-        $entityManager = $this->getDoctrine()->getManager();
+        // $entityManager = $this->getDoctrine()->getManager();
 
-        $query = $entityManager->createQuery(
-            'SELECT DISTINCT e.country
-            FROM App\Entity\Enterprise e'
-        );
+        // $query = $entityManager->createQuery(
+        //     'SELECT DISTINCT e.country
+        //     FROM App\Entity\Enterprise e'
+        // );
 
         return $this->render('product_controller2/index.html.twig', [
-
             'products' => $productRepository->findAll(),
-            'countries' => $query->getResult()
+            'countries' => [['country' => 'Mx']],
         ]);
     }
-
 
     /**
      * @Route("/new", name="product_controller2_new", methods={"GET","POST"})
@@ -89,7 +87,9 @@ class ProductController2 extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $this->getDoctrine()
+                ->getManager()
+                ->flush();
 
             return $this->redirectToRoute('product_controller2_index');
         }
@@ -105,7 +105,12 @@ class ProductController2 extends AbstractController
      */
     public function delete(Request $request, Product $product): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$product->getId(), $request->request->get('_token'))) {
+        if (
+            $this->isCsrfTokenValid(
+                'delete' . $product->getId(),
+                $request->request->get('_token')
+            )
+        ) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($product);
             $entityManager->flush();
@@ -113,9 +118,4 @@ class ProductController2 extends AbstractController
 
         return $this->redirectToRoute('product_controller2_index');
     }
-
-
-
-
-
 }

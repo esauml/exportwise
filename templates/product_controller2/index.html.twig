@@ -131,7 +131,7 @@
 
                                                                 </div>
                                                                 <div class="product-action-2">
-                                                                    <a title="Add to cart" href="#">Add to cart</a>
+                                                                    <a title="Add to cart" href="#" onClick="addToCart({{ product.id }})">Add to cart</a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -204,5 +204,8 @@
     <br>
     <br>
 
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/js/purchase-order.js"></script>
 
 {% endblock %}

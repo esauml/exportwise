@@ -22,6 +22,7 @@ class ProductType extends AbstractType
             ->add('imageFile',FileType::class, [
                 'required' => false
             ])
+            ->add('unit')
         ;
     }
 

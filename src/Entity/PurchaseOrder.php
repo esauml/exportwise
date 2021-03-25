@@ -26,12 +26,6 @@ class PurchaseOrder
     private $buyer;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Enterprise::class)
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $seller;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $date_done;
@@ -64,18 +58,6 @@ class PurchaseOrder
     public function setBuyerId(?Enterprise $buyer): self
     {
         $this->buyer = $buyer;
-
-        return $this;
-    }
-
-    public function getSellerId(): ?Enterprise
-    {
-        return $this->seller;
-    }
-
-    public function setSellerId(?Enterprise $seller): self
-    {
-        $this->seller = $seller;
 
         return $this;
     }
@@ -138,19 +120,33 @@ class PurchaseOrder
 
     public function __toString()
     {
-        $str =  "{
-            \"id\": \"". $this->id ."\"
-            \"idSeller\": \"". $this->id ."\"
+        $str =
+            "{
+            \"id\": \"" .
+            $this->id .
+            "\"
+            \"idSeller\": \"" .
+            $this->id .
+            "\"
             \"detailsPO\": [";
 
-        
-            
         foreach ($this->detailPurchaseOrders as $dpo) {
             # code...
+            $str .=
+                "{ \"id\": " .
+                $dpo->getId() .
+                ", \"productId\": " .
+                $dpo->getProductId()->getId() .
+                ", \"purchaseOrderId\": " .
+                $dpo->getPurchaseOrder()->getId() .
+                ", \"quantity\": " .
+                $dpo->getQuantity() .
+                '}, ';
         }
 
-        return $str;
+        // quita el último coma (,)
+        $str .= substr($str, 0, -1);
+
+        $str .= ']}';
     }
-
-
 }

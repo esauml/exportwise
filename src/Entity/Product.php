@@ -193,6 +193,25 @@ class Product
         return $this;
     }
 
+    /**
+     * Get the value of Unit
+     */
 
+    public function getUnit()
+    {
+        return $this->Unit;
+    }
 
+    /**
+     * Set the value of Unit
+     *
+     * @return  self
+     */
+
+    public function setUnit($Unit)
+    {
+        $this->Unit = $Unit;
+
+        return $this;
+    }
 }

@@ -3,8 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\PurchaseOrder;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method PurchaseOrder|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,9 +15,33 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class PurchaseOrderRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
+    private $manager;
+
+    public function __construct(
+        ManagerRegistry $registry,
+        EntityManagerInterface $manager
+    ) {
         parent::__construct($registry, PurchaseOrder::class);
+        $this->manager = $manager;
+    }
+
+    public function getLastById($id)
+    {
+        # code...
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager
+            ->createQuery(
+                'SELECT p
+            FROM App\Entity\PurchaseOrder p
+            WHERE p.status = 1
+            and p.buyer_id = :id
+            limit 1'
+            )
+            ->setParameter('id', $id);
+
+        // returns an array of Product objects
+        return $query->getResult();
     }
 
     // /**

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Enterprise;
 use App\Entity\Product;
+use App\Entity\PurchaseOrder;
 use App\Repository\ProductRepository;
 use stdClass;
 #use App\Repository\ProductRepository;
@@ -23,6 +24,32 @@ class ProductController extends AbstractController
     public function __construct(ProductRepository $repository)
     {
         $this->repository = $repository;
+    }
+
+    /**
+     * @Route("/shopping-cart", name="shopping_cart", methods={"GET"})
+     */
+    public function showShoppingCart(Request $request)
+    {
+        // get logged user
+        $id = $this->getDoctrine()
+            ->getManager()
+            ->getRepository(Enterprise::class)
+            ->find($this->getUser()->getId())
+            ->getId();
+
+        if (!$id) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $po = $this->getDoctrine()
+            ->getManager()
+            ->getRepository(PurchaseOrder::class)
+            ->findOneBy(['buyer' => $id], ['id' => 'DESC']);
+        # code...
+        return $this->render('product_controller2/shopping-cart.html.twig', [
+            'po' => $po,
+        ]);
     }
 
     /**
@@ -324,7 +351,6 @@ class ProductController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('product/index.html.twig', [
-        ]);
+        return $this->render('product/index.html.twig', []);
     }
 }
