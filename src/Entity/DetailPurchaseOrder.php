@@ -23,11 +23,6 @@ class DetailPurchaseOrder
     private $quantity;
 
     /**
-     * @ORM\Column(type="string", length=10)
-     */
-    private $unit;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Product::class)
      * @ORM\JoinColumn(nullable=false)
      */
@@ -52,18 +47,6 @@ class DetailPurchaseOrder
     public function setQuantity(float $quantity): self
     {
         $this->quantity = $quantity;
-
-        return $this;
-    }
-
-    public function getUnit(): ?string
-    {
-        return $this->unit;
-    }
-
-    public function setUnit(string $unit): self
-    {
-        $this->unit = $unit;
 
         return $this;
     }

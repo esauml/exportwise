@@ -28,9 +28,7 @@
                         <ul class="list-main">
 
                             <form method="post">
-{#                                {% if error %}#}
-{#                                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>#}
-{#                                {% endif %}#}
+
 
                                 {% if app.user %}
                                     <div class="mb-3">
@@ -100,12 +98,15 @@
                 <div class="col-lg-2 col-md-3 col-12">
                     <div class="right-bar">
                         <!-- Search Form -->
-                        <div class="sinlge-bar">
-                            <a href="#" class="single-icon"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
-                        </div>
-                        <div class="sinlge-bar">
-                            <a href="#" class="single-icon"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
-                        </div>
+                         {% if app.user %}
+                             <div class="sinlge-bar">
+                                 <a href="{{ path('enterprise_show') }}" class="single-icon"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+                             </div>
+                             <div class="sinlge-bar">
+                                 <a href="#" class="single-icon"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
+                             </div>
+                        {% endif %}
+
                         <div class="sinlge-bar shopping">
                             <a href="#" class="single-icon"><i class="ti-bag"></i> <span
                                         class="total-count">2</span></a>
@@ -136,7 +137,7 @@
                                         <span>Total</span>
                                         <span class="total-amount">$134.00</span>
                                     </div>
-                                    <a href="checkout.html" class="btn animate">Checkout</a>
+                                    <a href="/checkout" class="btn animate">Checkout</a>
                                 </div>
                             </div>
                             <!--/ End Shopping Item -->
@@ -160,19 +161,10 @@
                                         <ul class="nav main-menu menu navbar-nav">
                                             <li class="active"><a href="#">Home</a></li>
                                             <li><a href="#">Product</a></li>
-                                            <li><a href="#">Service</a></li>
-                                            <li><a href="#">Shop<i class="ti-angle-down"></i><span
-                                                            class="new">New</span></a>
+                                            <li><a href="#">Shop<i class="ti-angle-down"></i></a>
                                                 <ul class="dropdown">
-                                                    <li><a href="shop-grid.html">Shop Grid</a></li>
                                                     <li><a href="cart.html">Cart</a></li>
                                                     <li><a href="checkout.html">Checkout</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="#">Pages</a></li>
-                                            <li><a href="#">Blog<i class="ti-angle-down"></i></a>
-                                                <ul class="dropdown">
-                                                    <li><a href="blog-single-sidebar.html">Blog Single Sidebar</a></li>
                                                 </ul>
                                             </li>
                                             <li><a href="contact.html">Contact Us</a></li>

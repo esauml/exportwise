@@ -24,32 +24,27 @@
                             {{ form_start(registrationForm) }}
 
                             <div class="row">
-
-                                <div class="col-lg-6 col-12">
-                                    <div class="form-group">
-                                        {{ form_row(registrationForm.agreeTerms) }}
-
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-6 col-12">
-                                    <div class="form-group">
-                                        {{ form_row(registrationForm.email) }}
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-12">
-                                    <div class="form-group">
-                                        {{ form_row(registrationForm.country) }}
-
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-12">
+                                <div class="col-12">
                                     <div class="form-group">
                                         {{ form_row(registrationForm.companyName) }}
 
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-12">
+
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        {{ form_row(registrationForm.email) }}
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        {{ form_row(registrationForm.country) }}
+
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
                                     <div class="form-group">
                                         {{ form_row(registrationForm.phone) }}
 
@@ -57,7 +52,7 @@
                                 </div>
 
 
-                                <div class="col-lg-6 col-12">
+                                <div class="col-12">
                                     <div class="form-group">
                                         {{ form_row(
                                             registrationForm.plainPassword,
@@ -70,25 +65,21 @@
                                 </div>
 
 
-                                <div class="col-lg-6 col-12">
+                                <div class="col-12">
                                     <div class="form-group">
                                         {{ form_row(registrationForm.role) }}
 
                                     </div>
                                 </div>
 
-                                <div class="col-lg-6 col-12">
+                                <div class="col-12">
                                     <div class="form-group">
                                         {{ form_end(registrationForm) }}
 
                                     </div>
                                 </div>
 
-                                <div class="col-lg-6 col-12">
-                                    <div class="form-group">
 
-                                    </div>
-                                </div>
                                 <div class="col-12">
                                     <div class="form-group button">
                                         <button type="submit" class="btn ">Send Message</button>
@@ -96,6 +87,8 @@
                                 </div>
                             </div>
                             </form>
+                            {{ form_end(registrationForm) }}
+
                         </div>
                     </div>
 
