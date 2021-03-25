@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Enterprise;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
@@ -15,20 +16,33 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @method Enterprise[]    findAll()
  * @method Enterprise[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class EnterpriseRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
+class EnterpriseRepository extends ServiceEntityRepository implements
+    PasswordUpgraderInterface
 {
-    public function __construct(ManagerRegistry $registry)
-    {
+    private $manager;
+
+    public function __construct(
+        ManagerRegistry $registry,
+        EntityManagerInterface $manager
+    ) {
         parent::__construct($registry, Enterprise::class);
+        $this->manager = $manager;
     }
 
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
      */
-    public function upgradePassword(UserInterface $user, string $newEncodedPassword): void
-    {
+    public function upgradePassword(
+        UserInterface $user,
+        string $newEncodedPassword
+    ): void {
         if (!$user instanceof Enterprise) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
+            throw new UnsupportedUserException(
+                sprintf(
+                    'Instances of "%s" are not supported.',
+                    \get_class($user)
+                )
+            );
         }
 
         $user->setPassword($newEncodedPassword);

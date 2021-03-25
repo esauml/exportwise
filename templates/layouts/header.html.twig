@@ -1,10 +1,10 @@
 <div class="preloader">
-<div class="preloader-inner">
-    <div class="preloader-icon">
-        <span></span>
-        <span></span>
+    <div class="preloader-inner">
+        <div class="preloader-icon">
+            <span></span>
+            <span></span>
+        </div>
     </div>
-</div>
 </div>
 
 <header class="header shop">
@@ -26,9 +26,26 @@
                     <!-- Top Right -->
                     <div class="right-content">
                         <ul class="list-main">
-                            <li><i class="ti-alarm-clock"></i> <a href="#">Deal du jour</a></li>
-                            <li><i class="ti-user"></i> <a href="#">Mon compte</a></li>
-                            <li><i class="ti-power-off"></i><a href="login.html#">Se connecter</a></li>
+
+                            <form method="post">
+{#                                {% if error %}#}
+{#                                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>#}
+{#                                {% endif %}#}
+
+                                {% if app.user %}
+                                    <div class="mb-3">
+                                        <li><i class="ti-user"></i> <a href="/enterprise/profile">{{ app.user.username }}</a></li>
+                                        <li><i class="ti-power-off"></i> <a href="#"><a href="{{ path('app_logout') }}">Logout</a></a>
+                                        </li>
+                                    </div>
+                                    {% else %}
+                                <li><i class="ti-user"></i> <a href="/login">Mon compte</a></li>
+                                        <li><i class="ti-user"></i> <a href="/register">Creé un compte</a></li>
+
+                                {% endif %}
+
+
+                            </form>
                         </ul>
                     </div>
                     <!-- End Top Right -->
@@ -66,8 +83,8 @@
                         <div class="search-bar">
                             <select>
                                 <option selected="selected">Catégories</option>
-{#                                {% for category in categories %}#}
-{#                                <option>{{ category.id }}</option>#}
+                                {# {% for category in categories %} #}
+                                {# <option>{{ category.id }}</option> #}
                                 <option>mobile</option>
                                 <option>kid’s item</option>
                             </select>
@@ -90,7 +107,8 @@
                             <a href="#" class="single-icon"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
                         </div>
                         <div class="sinlge-bar shopping">
-                            <a href="#" class="single-icon"><i class="ti-bag"></i> <span class="total-count">2</span></a>
+                            <a href="#" class="single-icon"><i class="ti-bag"></i> <span
+                                        class="total-count">2</span></a>
                             <!-- Shopping Item -->
                             <div class="shopping-item">
                                 <div class="dropdown-cart-header">
@@ -100,13 +118,15 @@
                                 <ul class="shopping-list">
                                     <li>
                                         <a href="#" class="remove" title="Remove this item"><i class="fa fa-remove"></i></a>
-                                        <a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70" alt="#"></a>
+                                        <a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70"
+                                                                          alt="#"></a>
                                         <h4><a href="#">Woman Ring</a></h4>
                                         <p class="quantity">1x - <span class="amount">$99.00</span></p>
                                     </li>
                                     <li>
                                         <a href="#" class="remove" title="Remove this item"><i class="fa fa-remove"></i></a>
-                                        <a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70" alt="#"></a>
+                                        <a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70"
+                                                                          alt="#"></a>
                                         <h4><a href="#">Woman Necklace</a></h4>
                                         <p class="quantity">1x - <span class="amount">$35.00</span></p>
                                     </li>
@@ -141,7 +161,8 @@
                                             <li class="active"><a href="#">Home</a></li>
                                             <li><a href="#">Product</a></li>
                                             <li><a href="#">Service</a></li>
-                                            <li><a href="#">Shop<i class="ti-angle-down"></i><span class="new">New</span></a>
+                                            <li><a href="#">Shop<i class="ti-angle-down"></i><span
+                                                            class="new">New</span></a>
                                                 <ul class="dropdown">
                                                     <li><a href="shop-grid.html">Shop Grid</a></li>
                                                     <li><a href="cart.html">Cart</a></li>

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Enterprise;
+use App\Form\EnterpriseRegistrationType;
 use App\Form\EnterpriseType;
 use App\Repository\EnterpriseRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,6 +16,13 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class EnterpriseController extends AbstractController
 {
+    private $repository;
+
+    public function __construct(EnterpriseRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      * @Route("/", name="enterprise_index", methods={"GET"})
      */
@@ -26,34 +34,15 @@ class EnterpriseController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="enterprise_new", methods={"GET","POST"})
+     * @Route("/profile", name="enterprise_show", methods={"GET"})
      */
-    public function new(Request $request): Response
+    public function profile(): Response
     {
-        $enterprise = new Enterprise();
-        $form = $this->createForm(EnterpriseType::class, $enterprise);
-        $form->handleRequest($request);
+        $userId = $this->getUser()->getId();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($enterprise);
-            $entityManager->flush();
+        $enterprise = $this->repository->findOneBy(['id' => $userId]);
 
-            return $this->redirectToRoute('enterprise_index');
-        }
-
-        return $this->render('enterprise/new.html.twig', [
-            'enterprise' => $enterprise,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/{id}", name="enterprise_show", methods={"GET"})
-     */
-    public function show(Enterprise $enterprise): Response
-    {
-        return $this->render('enterprise/show.html.twig', [
+        return $this->render('enterprise/profile.html.twig', [
             'enterprise' => $enterprise,
         ]);
     }
@@ -67,7 +56,9 @@ class EnterpriseController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $this->getDoctrine()
+                ->getManager()
+                ->flush();
 
             return $this->redirectToRoute('enterprise_index');
         }
@@ -83,7 +74,12 @@ class EnterpriseController extends AbstractController
      */
     public function delete(Request $request, Enterprise $enterprise): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$enterprise->getId(), $request->request->get('_token'))) {
+        if (
+            $this->isCsrfTokenValid(
+                'delete' . $enterprise->getId(),
+                $request->request->get('_token')
+            )
+        ) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($enterprise);
             $entityManager->flush();

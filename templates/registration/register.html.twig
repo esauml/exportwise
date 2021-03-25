@@ -1,36 +1,110 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-  Register
+    Register
 {% endblock %}
 
 {% block body %}
-  {% for flashError in app.flashes('verify_email_error') %}
-    <div class="alert alert-danger" role="alert">
-      {{ flashError }}
-    </div>
-  {% endfor %}
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">
+            {{ flashError }}
+        </div>
+    {% endfor %}
 
-  <h1>
-    Register Enterprise
-  </h1>
+    <section id="contact-us" class="contact-us section">
+        <div class="container">
+            <div class="contact-head">
+                <div class="row">
+                    <div class="col-lg-8 col-12">
+                        <div class="form-main">
+                            <div class="title">
+                                <h4>ExportWise</h4>
+                                <h3>Connectez-vous et achetez à travers le monde entier sans difficulté</h3>
+                            </div>
+                            {{ form_start(registrationForm) }}
 
-  {{ form_start(registrationForm) }}
-  {{ form_row(registrationForm.email) }}
-  {{ form_row(registrationForm.country) }}
-  {{ form_row(registrationForm.companyName) }}
-  {{ form_row(registrationForm.phone) }}
-  {{
-    form_row(
-      registrationForm.plainPassword,
-      {
-        label: 'Password'
-      }
-    )
-  }}
-  {{ form_row(registrationForm.role) }}
-  {{ form_row(registrationForm.agreeTerms) }}
+                            <div class="row">
 
-  <button type="submit" class="btn">Register</button>
-  {{ form_end(registrationForm) }}
+                                <div class="col-lg-6 col-12">
+                                    <div class="form-group">
+                                        {{ form_row(registrationForm.agreeTerms) }}
+
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 col-12">
+                                    <div class="form-group">
+                                        {{ form_row(registrationForm.email) }}
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-12">
+                                    <div class="form-group">
+                                        {{ form_row(registrationForm.country) }}
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-12">
+                                    <div class="form-group">
+                                        {{ form_row(registrationForm.companyName) }}
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-12">
+                                    <div class="form-group">
+                                        {{ form_row(registrationForm.phone) }}
+
+                                    </div>
+                                </div>
+
+
+                                <div class="col-lg-6 col-12">
+                                    <div class="form-group">
+                                        {{ form_row(
+                                            registrationForm.plainPassword,
+                                            {
+                                                label: 'Password'
+                                            }
+                                        ) }}
+
+                                    </div>
+                                </div>
+
+
+                                <div class="col-lg-6 col-12">
+                                    <div class="form-group">
+                                        {{ form_row(registrationForm.role) }}
+
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 col-12">
+                                    <div class="form-group">
+                                        {{ form_end(registrationForm) }}
+
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 col-12">
+                                    <div class="form-group">
+
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group button">
+                                        <button type="submit" class="btn ">Send Message</button>
+                                    </div>
+                                </div>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
 {% endblock %}

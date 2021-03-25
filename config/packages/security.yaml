@@ -40,5 +40,6 @@ security:
         # - {path ^/product, roles: ROLE_ADMIN}
         - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/enterprise/profile, roles: IS_AUTHENTICATED_FULLY}
         
  #- {path:}^

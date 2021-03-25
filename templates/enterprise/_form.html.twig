@@ -1,4 +1,9 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{# {{ form_widget(form) }} #}
+{{ form_row(form.companyName) }}
+{{ form_row(form.country) }}
+{{ form_row(form.phone) }}
+{# {{ form_row(form.logo) }} #}
+{{ form_row(form.contactName) }}
+<button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

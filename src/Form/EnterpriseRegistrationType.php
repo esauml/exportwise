@@ -20,7 +20,7 @@ class EnterpriseRegistrationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', EmailType::class, ['required' => true,])
+            ->add('email', EmailType::class, ['required' => true])
             ->add('agreeTerms', CheckboxType::class, [
                 'required' => true,
                 'mapped' => false,
@@ -31,13 +31,12 @@ class EnterpriseRegistrationType extends AbstractType
                 ],
             ])
             ->add('role', CheckboxType::class, [
-            
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
                         'message' => 'type of role',
-                    ])
-                ]
+                    ]),
+                ],
             ])
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
@@ -50,13 +49,14 @@ class EnterpriseRegistrationType extends AbstractType
                     ]),
                     new Length([
                         'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
+                        'minMessage' =>
+                            'Your password should be at least {{ limit }} characters',
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),
                 ],
             ])
-            ->add('companyName', null, ['required' => true,])
+            ->add('companyName', null, ['required' => true])
             ->add('country', ChoiceType::class, [
                 'required' => true,
                 'choices' => [
@@ -66,11 +66,11 @@ class EnterpriseRegistrationType extends AbstractType
                     'Russie' => 'Russia',
                     'Japon' => 'Japan',
                     'Finlande' => 'Finlande',
-                    'Philippines' => 'Philippines'
+                    'Philippines' => 'Philippines',
                 ],
-
             ])
-            ->add('phone', null, ['required' => true,]);
+            ->add('phone', null, ['required' => true])
+            ->add('contactName', null, ['required' => true]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
