@@ -12,9 +12,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-
+use Symfony\Component\Form\Extension\Core\Type\RadioType;
 class EnterpriseRegistrationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -30,8 +30,9 @@ class EnterpriseRegistrationType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('role', CheckboxType::class, [
+            ->add('role', RadioType::class, [
                 'mapped' => false,
+                'required' => false,
                 'constraints' => [
                     new IsTrue([
                         'message' => 'type of role',
@@ -57,7 +58,7 @@ class EnterpriseRegistrationType extends AbstractType
                 ],
             ])
             ->add('companyName', null, ['required' => true])
-            ->add('country', ChoiceType::class, [
+           /*  ->add('country', ChoiceType::class, [
                 'required' => true,
                 'choices' => [
                     'France' => 'France',
@@ -68,6 +69,10 @@ class EnterpriseRegistrationType extends AbstractType
                     'Finlande' => 'Finlande',
                     'Philippines' => 'Philippines',
                 ],
+            ]) */
+            ->add('country', CountryType::class, [
+                'required' => true,
+               
             ])
             ->add('phone', null, ['required' => true])
             ->add('contactName', null, ['required' => true]);
