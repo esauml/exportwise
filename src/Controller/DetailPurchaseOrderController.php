@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\DetailPurchaseOrder;
+use App\Entity\Product;
+use App\Entity\Enterprise;
 use App\Form\DetailPurchaseOrderType;
 use App\Repository\DetailPurchaseOrderRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

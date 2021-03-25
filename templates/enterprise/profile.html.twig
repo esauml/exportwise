@@ -1,52 +1,58 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-	<h1>Enterprise</h1>
+	<div class="container mt-2">
+		<div
+			class="card">
+			{# Logo image #}
+			<img class="card-img-top rounded mx-auto" src="{{ "image lgoo" }}" alt="logo">
+			<div class="card-body">
+				<h4
+					class="card-title">
+					{# Company name #}
+					{{ enterprise.companyName }}
+					<span style="float: right">
+						<a type="button" class="btn btn-dark text-white" href="{{ path('enterprise_edit', {'id': enterprise.id}) }}">Edit</a>
+					</span>
+				</h4>
 
-	<table class="table">
-		<tbody>
-			<tr>
-				<th>Id</th>
-				<td>{{ enterprise.id }}</td>
-			</tr>
-			<tr>
-				<th>Email</th>
-				<td>{{ enterprise.email }}</td>
-			</tr>
-			<tr>
-				<th>Roles</th>
-				<td>{{ enterprise.roles ? enterprise.roles|json_encode : '' }}</td>
-			</tr>
-			<tr>
-				<th>Password</th>
-				<td>{{ enterprise.password }}</td>
-			</tr>
-			<tr>
-				<th>Company_name</th>
-				<td>{{ enterprise.companyName }}</td>
-			</tr>
-			<tr>
-				<th>Logo</th>
-				<td>{{ enterprise.logo }}</td>
-			</tr>
-			<tr>
-				<th>Country</th>
-				<td>{{ enterprise.country }}</td>
-			</tr>
-			<tr>
-				<th>Phone</th>
-				<td>{{ enterprise.phone }}</td>
-			</tr>
-			<tr>
-				<th>ContactName</th>
-				<td>{{ enterprise.contactName }}</td>
-			</tr>
-		</tbody>
-	</table>
+				<div class="table-responsive">
+
+					<table class="table tabel-hover table-responsive">
+						<tbody>
+							<tr>
+								<th scope="row">Email</th>
+								<td>{{ enterprise.email }}</td>
+							</tr>
+							<tr>
+								<th scope="row">Roles</th>
+								<td>{{ enterprise.roles ? enterprise.roles|json_encode : '' }}</td>
+							</tr>
+							<tr>
+								<th scope="row">Logo</th>
+								<td>{{ enterprise.logo }}</td>
+							</tr>
+							<tr>
+								<th scope="row">Country</th>
+								<td>{{ enterprise.country }}</td>
+							</tr>
+							<tr>
+								<th scope="row">Phone</th>
+								<td>{{ enterprise.phone }}</td>
+							</tr>
+							<tr>
+								<th scope="row">ContactName</th>
+								<td>{{ enterprise.contactName }}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+			</div>
+		</div>
+	</div>
 
 	{# <a href="{{ path('enterprise_index') }}">back to list</a> #}
-
-	<a href="{{ path('enterprise_edit', {'id': enterprise.id}) }}">edit</a>
 
 	{# 	 #}
 

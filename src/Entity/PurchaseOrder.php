@@ -42,7 +42,7 @@ class PurchaseOrder
     private $status;
 
     /**
-     * @ORM\OneToMany(targetEntity=DetailPurchaseOrder::class, mappedBy="purchaseOrder")
+     * @ORM\OneToMany(targetEntity=DetailPurchaseOrder::class, mappedBy="purchaseOrder", cascade={"persist"})
      */
     private $detailPurchaseOrders;
 
@@ -135,4 +135,22 @@ class PurchaseOrder
 
         return $this;
     }
+
+    public function __toString()
+    {
+        $str =  "{
+            \"id\": \"". $this->id ."\"
+            \"idSeller\": \"". $this->id ."\"
+            \"detailsPO\": [";
+
+        
+            
+        foreach ($this->detailPurchaseOrders as $dpo) {
+            # code...
+        }
+
+        return $str;
+    }
+
+
 }

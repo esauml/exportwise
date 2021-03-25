@@ -48,6 +48,11 @@ class Product
      */
     private $seller;
 
+    /**
+     * @ORM\Column(type="string", length=15)
+     */
+    private $Unit;
+
     public function setId(int $id): self
     {
         $this->id = $id;
@@ -128,6 +133,18 @@ class Product
     public function setSeller(?Enterprise $seller): self
     {
         $this->seller = $seller;
+
+        return $this;
+    }
+
+    public function getUnit(): ?string
+    {
+        return $this->Unit;
+    }
+
+    public function setUnit(string $Unit): self
+    {
+        $this->Unit = $Unit;
 
         return $this;
     }
