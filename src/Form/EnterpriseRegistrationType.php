@@ -14,7 +14,8 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\RadioType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+
 class EnterpriseRegistrationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -30,14 +31,10 @@ class EnterpriseRegistrationType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('role', RadioType::class, [
-                'mapped' => false,
+            ->add('role', CheckboxType::class, [
                 'required' => false,
-                'constraints' => [
-                    new IsTrue([
-                        'message' => 'type of role',
-                    ]),
-                ],
+                'mapped' => false,
+
             ])
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
@@ -51,14 +48,14 @@ class EnterpriseRegistrationType extends AbstractType
                     new Length([
                         'min' => 6,
                         'minMessage' =>
-                            'Your password should be at least {{ limit }} characters',
+                        'Your password should be at least {{ limit }} characters',
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),
                 ],
             ])
             ->add('companyName', null, ['required' => true])
-           /*  ->add('country', ChoiceType::class, [
+            ->add('country', ChoiceType::class, [
                 'required' => true,
                 'choices' => [
                     'France' => 'France',
@@ -69,11 +66,11 @@ class EnterpriseRegistrationType extends AbstractType
                     'Finlande' => 'Finlande',
                     'Philippines' => 'Philippines',
                 ],
-            ]) */
-            ->add('country', CountryType::class, [
+            ])
+            /*  ->add('country', CountryType::class, [
                 'required' => true,
                
-            ])
+            ]) */
             ->add('phone', null, ['required' => true])
             ->add('contactName', null, ['required' => true]);
     }

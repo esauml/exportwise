@@ -36,6 +36,7 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
+            echo $form->get('role')->getData();
             if ($form->get('role')->getData() == true) {
                 $user->setRoles(
                     ['ROLE_ADMIN']
