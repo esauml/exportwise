@@ -26,3 +26,7 @@ yarn-error.log
 /.vscode
 # DATBASE environment
 .env
+
+###> liip/imagine-bundle ###
+/public/media/cache/
+###< liip/imagine-bundle ###

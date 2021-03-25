@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Enterprise;
 use App\Entity\Product;
 use App\Form\ProductType;
+use App\Repository\EnterpriseRepository;
 use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,12 +21,21 @@ class ProductController2 extends AbstractController
      * @Route("/", name="product_controller2_index", methods={"GET"})
      */
     public function index(ProductRepository $productRepository): Response
-    {dump($productRepository->findAll());
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT DISTINCT e.country
+            FROM App\Entity\Enterprise e'
+        );
+
         return $this->render('product_controller2/index.html.twig', [
 
             'products' => $productRepository->findAll(),
+            'countries' => $query->getResult()
         ]);
     }
+
 
     /**
      * @Route("/new", name="product_controller2_new", methods={"GET","POST"})
@@ -50,11 +61,21 @@ class ProductController2 extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="product_controller2_show", methods={"GET"})
+     * @Route("/{id}", name="product_controller2_show_admin", methods={"GET"})
      */
     public function show(Product $product): Response
     {
         return $this->render('product_controller2/show.html.twig', [
+            'product' => $product,
+        ]);
+    }
+
+    /**
+     * @Route("/pp/{id}", name="product_controller2_show_main", methods={"GET"})
+     */
+    public function showMain(Product $product): Response
+    {
+        return $this->render('product_controller2/mainShow.html.twig', [
             'product' => $product,
         ]);
     }
@@ -92,4 +113,9 @@ class ProductController2 extends AbstractController
 
         return $this->redirectToRoute('product_controller2_index');
     }
+
+
+
+
+
 }

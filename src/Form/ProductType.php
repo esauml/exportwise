@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Product;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -18,6 +19,9 @@ class ProductType extends AbstractType
             ->add('image')
             ->add('status')
             ->add('seller')
+            ->add('imageFile',FileType::class, [
+                'required' => false
+            ])
         ;
     }
 

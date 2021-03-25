@@ -10,7 +10,7 @@
             <tr>
                 <th>Id</th>
                 <th>Email</th>
-                <th>Roles</th>
+
                 <th>Password</th>
                 <th>Company_name</th>
                 <th>Logo</th>
@@ -25,7 +25,6 @@
             <tr>
                 <td>{{ enterprise.id }}</td>
                 <td>{{ enterprise.email }}</td>
-                <td>{{ enterprise.roles ? enterprise.roles|json_encode : '' }}</td>
                 <td>{{ enterprise.password }}</td>
                 <td>{{ enterprise.companyName }}</td>
                 <td>{{ enterprise.logo }}</td>
