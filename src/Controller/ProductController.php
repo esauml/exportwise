@@ -318,4 +318,13 @@ class ProductController extends AbstractController
         // return JsonResponse
         return new JsonResponse(['status' => $status], Response::HTTP_OK);
     }
+
+    /**
+     * @Route("/products", name="product_index")
+     */
+    public function index(): Response
+    {
+        return $this->render('product/index.html.twig', [
+        ]);
+    }
 }

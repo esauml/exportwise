@@ -2,20 +2,6 @@
     "api-platform/api-pack": {
         "version": "v1.3.0"
     },
-    "api-platform/core": {
-        "version": "2.5",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "2.5",
-            "ref": "a93061567140e386f107be75340ac2aee3f86cbf"
-        },
-        "files": [
-            "config/packages/api_platform.yaml",
-            "config/routes/api_platform.yaml",
-            "src/Entity/.gitignore"
-        ]
-    },
     "composer/package-versions-deprecated": {
         "version": "1.11.99.1"
     },
@@ -98,11 +84,14 @@
     "egulias/email-validator": {
         "version": "3.1.0"
     },
-    "fig/link-util": {
-        "version": "1.1.2"
-    },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.3"
+    },
+    "imagine/imagine": {
+        "version": "1.2.4"
+    },
+    "jms/metadata": {
+        "version": "2.5.0"
     },
     "laminas/laminas-code": {
         "version": "4.0.0"
@@ -113,20 +102,21 @@
     "laminas/laminas-zendframework-bridge": {
         "version": "1.2.0"
     },
-    "monolog/monolog": {
-        "version": "2.2.0"
-    },
-    "nelmio/cors-bundle": {
-        "version": "1.5",
+    "liip/imagine-bundle": {
+        "version": "1.8",
         "recipe": {
-            "repo": "github.com/symfony/recipes",
+            "repo": "github.com/symfony/recipes-contrib",
             "branch": "master",
-            "version": "1.5",
-            "ref": "6bea22e6c564fba3a1391615cada1437d0bde39c"
+            "version": "1.8",
+            "ref": "5a5bdc2d0e2533ed6935d5ae562f2b318a8fc1ee"
         },
         "files": [
-            "config/packages/nelmio_cors.yaml"
+            "./config/packages/liip_imagine.yaml",
+            "./config/routes/liip_imagine.yaml"
         ]
+    },
+    "monolog/monolog": {
+        "version": "2.2.0"
     },
     "nikic/php-parser": {
         "version": "v4.10.4"
@@ -565,10 +555,19 @@
     "twig/twig": {
         "version": "v3.3.0"
     },
+    "vich/uploader-bundle": {
+        "version": "1.5",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.5",
+            "ref": "c4f5755b37fb65b9c6a3cbdae91205c15a137ed4"
+        },
+        "files": [
+            "./config/packages/vich_uploader.yaml"
+        ]
+    },
     "webmozart/assert": {
         "version": "1.10.0"
-    },
-    "willdurand/negotiation": {
-        "version": "3.0.0"
     }
 }
