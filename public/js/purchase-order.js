@@ -1,31 +1,32 @@
 var api = "http://localhost:8000/api";
 
-async function addToCart(productId) {
-  let po = await getLastPO(productId);
+function addToCart(productId) {
+  let po = getLastPO(productId);
 }
 
 function administrarDetail(productId, quantity, po) {
-  let details = po["detailsPO"];
+  // console.log("administrarDetail():");
+  let details = po.detailsPO;
 
   let found = false;
   // increase quantity
-  details.forEach((element) => {
-    // console.log(element);
+  details.forEach((element, key) => {
+    console.log(element);
 
-    if (element["productId"] == productId) {
-      element["quantity"] =
-        parseInt(quantity) + parseInt(element["quantity"], 10);
+    if (element.productId == productId) {
+      element.quantity = parseInt(quantity) + parseInt(element.quantity);
       found = true;
     }
   });
 
   if (!found) {
-    po["detailsPO"].push({
+    po.detailsPO.push({
       quantity: quantity,
       productId: productId,
     });
   }
 
+  console.log("found: " + found);
   callPOControl(po);
 
   // if (details[productId] != null) {
@@ -38,7 +39,7 @@ function administrarDetail(productId, quantity, po) {
   // }
 }
 
-function getLastPO(productId) {
+async function getLastPO(productId) {
   let quantity = 1;
   if (document.getElementById("input_quant")) {
     quantity = document.getElementById("input_quant").value;
@@ -48,28 +49,29 @@ function getLastPO(productId) {
     url: api + "/purchase-order/get",
     type: "GET",
     dataType: "json",
-    success: function (data) {
-      console.log(data);
-      if (data["data"]) administrarDetail(productId, quantity, data["data"]);
-      else {
-        let po = new Object();
-        po["detailsPO"] = [
-          {
-            productId: productId,
-            quantity: quantity,
-          },
-        ];
-        callPOControl(po);
-      }
-    },
     error: function (error) {
       console.log("Error:");
       console.log(error);
     },
+  }).done(function (data) {
+    console.log(data);
+    if (data["data"]) administrarDetail(productId, quantity, data.data);
+    else {
+      let po = new Object();
+      po["detailsPO"] = [
+        {
+          productId: productId,
+          quantity: parseInt(quantity),
+        },
+      ];
+      callPOControl(po);
+    }
   });
 }
 
 function callPOControl(po) {
+  // console.log("callPOControl");
+  // console.log(po);
   $.ajax({
     url: api + "/purchase-order/new",
     type: "POST",
@@ -77,6 +79,8 @@ function callPOControl(po) {
     data: JSON.stringify(po),
     success: function (data) {
       console.log(data);
+      // alert of changement
+      CWdialog(data.status + ": article added");
     },
     error: function (error) {
       console.log("Error:");

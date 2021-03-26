@@ -64,6 +64,8 @@ class PurchaseOrderController extends AbstractController
                 ->find($data['id']);
 
             $status = 'updated';
+
+            // $po->getDetailPurchaseOrders($po->getDetailPurchaseOrders());
         }
 
         $gdate = getdate();
@@ -104,8 +106,11 @@ class PurchaseOrderController extends AbstractController
                 $detail = $this->getDoctrine()
                     ->getManager()
                     ->getRepository(DetailPurchaseOrder::class)
-                    ->find($data['id']);
+                    ->find($detailPO['id']);
+                $check = 'entered here' . $detailPO['id'];
             }
+
+            dump($detail);
 
             $detail->setQuantity($detailPO['quantity']);
 
@@ -116,8 +121,12 @@ class PurchaseOrderController extends AbstractController
                 ->find($detailPO['productId']);
             $detail->setProductId($product);
 
+            // dump($detail);
+
             $po->addDetailPurchaseOrder($detail);
         }
+
+        dump($po);
 
         /*
             *   

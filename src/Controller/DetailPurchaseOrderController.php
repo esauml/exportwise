@@ -51,16 +51,6 @@ class DetailPurchaseOrderController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="detail_purchase_order_show", methods={"GET"})
-     */
-    public function show(DetailPurchaseOrder $detailPurchaseOrder): Response
-    {
-        return $this->render('detail_purchase_order/show.html.twig', [
-            'detail_purchase_order' => $detailPurchaseOrder,
-        ]);
-    }
-
-    /**
      * @Route("/{id}/edit", name="detail_purchase_order_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, DetailPurchaseOrder $detailPurchaseOrder): Response
@@ -81,16 +71,18 @@ class DetailPurchaseOrderController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="detail_purchase_order_delete", methods={"POST"})
+     * @Route("/{id}", name="detail_purchase_order_delete", methods={"POST", "GET"})
      */
     public function delete(Request $request, DetailPurchaseOrder $detailPurchaseOrder): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$detailPurchaseOrder->getId(), $request->request->get('_token'))) {
+        dump($detailPurchaseOrder);
+        if ($this->getUser()) {
+            dump("here");
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($detailPurchaseOrder);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('detail_purchase_order_index');
+        return $this->redirectToRoute('shopping_cart');
     }
 }

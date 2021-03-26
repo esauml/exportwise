@@ -53,6 +53,14 @@ class ProductController extends AbstractController
     }
 
     /**
+     * @Route("/checkout", name="checkout", methods={"POST", "GET"})
+     */
+    public function getCheckout(Request $request): Response
+    {
+        return $this->render('product_controller2/checkout.html.twig');
+    }
+
+    /**
      * @Route("/api/products/get-all", name="products_get_all",
      * methods={"GET"})
      */

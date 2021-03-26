@@ -25,84 +25,69 @@
                   Product
                 </th>
                 <th scope="col">
-                  Available
-                </th>
-                <th scope="col" class="text-center">
                   Quantity
                 </th>
-                <th scope="col" class="text-right">
+                <th scope="col" class="text-center">
                   Price
                 </th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>
-                  <img src="https://dummyimage.com/50x50/55595c/fff" />
-                </td>
-                <td>
-                  Product Name Dada
-                </td>
-                <td>
-                  In stock
-                </td>
-                <td>
-                  <input class="form-control" type="text" value="1" />
-                </td>
-                <td class="text-right">
-                  124,90 €
-                </td>
-                <td class="text-right">
-                  <button class="btn btn-sm btn-danger">
-                    <i class="fa fa-trash"></i>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <img src="https://dummyimage.com/50x50/55595c/fff" />
-                </td>
-                <td>
-                  Product Name Toto
-                </td>
-                <td>
-                  In stock
-                </td>
-                <td>
-                  <input class="form-control" type="text" value="1" />
-                </td>
-                <td class="text-right">
-                  33,90 €
-                </td>
-                <td class="text-right">
-                  <button class="btn btn-sm btn-danger">
-                    <i class="fa fa-trash"></i>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <img src="https://dummyimage.com/50x50/55595c/fff" />
-                </td>
-                <td>
-                  Product Name Titi
-                </td>
-                <td>
-                  In stock
-                </td>
-                <td>
-                  <input class="form-control" type="text" value="1" />
-                </td>
-                <td class="text-right">
-                  70,00 €
-                </td>
-                <td class="text-right">
-                  <button class="btn btn-sm btn-danger">
-                    <i class="fa fa-trash"></i>
-                  </button>
-                </td>
-              </tr>
+              {% set subtotal = 0 %}
+              {% set total = 0 %}
+              {% set shipping = 7.99 %}
+              {% for detail in po.detailPurchaseOrders %}
+                <tr>
+                  <td>
+                    <a href="{{ path('product_controller2_show_main', {'id': detail.productId.id}) }}">
+                      <img href="{{ path('product_controller2_show_main', {'id': detail.productId.id}) }}" class="hover-img" width="182" height="250"
+                            src="/images/products/{{ detail.productId.filename }}"
+                            alt="{{ detail.productId.description }}">
+                    </a>
+                  </td>
+                  <td>
+                    {{ detail.productId.name}}
+                  </td>
+                  {# <td>
+                    {% if detail.productId.status == 1 %}In Stock{% endif %}
+                  </td> #}
+                  <td>
+                    <div class="quantity">
+                        <!-- Input Order -->
+                        <div class="input-group">
+                            <div class="button minus">
+                                <button type="button"
+                                onClick="editQuantity('-1', '{{ detail.productId.id }}')" class="btn btn-primary btn-number" data-type="minus" data-field="quant[1]">
+                                    <i class="ti-minus"></i>
+                                </button>
+                            </div>
+                            <input type="text" id="input_quant_{{ detail.productId.id }}" name="quant[1]" class="input-number" onchange="addToCart({{ detail.productId.id }})" data-min="1" data-max="1000" value="{{ detail.quantity }}">
+                            <div class="button plus">
+                                <button type="button" 
+                                onClick="editQuantity('1', '{{ detail.productId.id }}')" class="btn btn-primary btn-number" data-type="plus" data-field="quant[1]">
+                                    <i class="ti-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!--/ End Input Order -->
+                    </div>
+                  </td>
+                  <td class="text-right">
+                    {% set price = detail.productId.price * detail.quantity %}
+                    ${{ price }}
+                  </td>
+                  <td class="text-right">
+                    <a class="btn btn-sm btn-danger" href="{{ path('detail_purchase_order_delete', {'id': detail.id}) }}">
+                      <i class="fa fa-trash"></i>
+                    </a>
+                  </td>
+                </tr>
+
+                {% set subtotal = subtotal + price %}
+              {% endfor %}
+              {% set total = subtotal + shipping %}
+
               <tr>
                 <td></td>
                 <td></td>
@@ -112,7 +97,7 @@
                   Sub-Total
                 </td>
                 <td class="text-right">
-                  255,90 €
+                  {{ subtotal }}
                 </td>
               </tr>
               <tr>
@@ -124,7 +109,7 @@
                   Shipping
                 </td>
                 <td class="text-right">
-                  6,90 €
+                  {{ shipping }}
                 </td>
               </tr>
               <tr>
@@ -136,7 +121,7 @@
                   <strong>Total</strong>
                 </td>
                 <td class="text-right">
-                  <strong>346,90 €</strong>
+                  <strong>{{ total }}</strong>
                 </td>
               </tr>
             </tbody>
@@ -149,9 +134,9 @@
             <button class="btn btn-block btn-light">Continue Shopping</button>
           </div>
           <div class="col-sm-12 col-md-6 text-right">
-            <button class="btn btn-lg btn-block btn-success text-uppercase">
+            <a class="btn btn-lg btn-block btn-success text-uppercase" href="{{ path('checkout') }}">
               Checkout
-            </button>
+            </a>
           </div>
         </div>
       </div>
@@ -159,5 +144,26 @@
   </div>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type="text/javascript" src="/js/cwdialog.js"></script>
   <script src="/js/purchase-order.js"></script>
+  <script type"javascript">
+    function editQuantity(editValue, productId) {
+      // console.log("enter");
+      console.log(editValue);
+      if (document.querySelector("#input_quant_" + productId)) {
+        quantity = parseInt(document.querySelector("#input_quant_" + productId).value, 10);
+        // console.log(document.querySelector(".input_quant_" + productId));
+        console.log(quantity);
+        quantity += parseInt(editValue);
+        document.querySelector("#input_quant_" + productId).value = quantity;
+        document.querySelector("#input_quant_" + productId).onchange();
+
+        location.reload();
+      }
+    }
+
+    function deleteDetail(detailId) {
+      window.location.href = "http://localhost:8000/detail/purchase/order/" + detailId;
+    }
+  </script>
 {% endblock %}

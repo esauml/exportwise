@@ -118,4 +118,5 @@ class ProductController2 extends AbstractController
 
         return $this->redirectToRoute('product_controller2_index');
     }
+
 }
