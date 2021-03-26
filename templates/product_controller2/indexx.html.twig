@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Product index{% endblock %}
+
+{% block body %}
+
+    <div class="container mt-2">
+        <div
+                class="card">
+            {# Logo image #}
+            <img class="card-img-top rounded mx-auto" src="{{ "image lgoo" }}" alt="logo">
+            <div class="card-body">
+                <h4 class="card-title">My products</h4>
+                <div class="table-responsive">
+                    <table class="table tabel-hover table-responsive">
+                        <thead>
+                        <tr>
+                            <th scope="row">Id</th>
+                            <th scope="row">Name</th>
+                            <th scope="row">Description</th>
+                            <th scope="row">Price</th>
+                            <th scope="row">Image</th>
+                            <th scope="row">Status</th>
+                            <th class="center" style="text-align: center" scope="row">actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for product in products %}
+                            <tr>
+                                <td>{{ product.id }}</td>
+                                <td>{{ product.name }}</td>
+                                <td>{{ product.description }}</td>
+                                <td>{{ product.price }}</td>
+                                <td>{{ product.image }}</td>
+                                <td>{{ product.status }}</td>
+                                <td>
+                                    <a type="button" class="btn btn-dark text-white"
+                                       href="{{ path('product_controller2_edit', {'id': product.id}) }}">Edit</a>
+                                    <a type="button" class="btn btn-dark text-white"
+                                       href="{{ path('product_controller2_delete', {'id': product.id}) }}">Delete</a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="7">no records found</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <a type="button" class="btn btn-dark text-white" href="{{ path('product_controller2_new') }}">Create
+                        new</a>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

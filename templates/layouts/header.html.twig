@@ -1,6 +1,6 @@
 <header class="header shop">
 	<!-- Topbar -->
-	{# <div class="topbar">
+	 <div class="topbar">
 					<div class="container">
 						<div class="row">
 							<div
@@ -20,24 +20,33 @@
 							<div
 								class="col-lg-8 col-md-12 col-12">
 								<!-- Top Right -->
-								<div class="right-content">
-									<ul class="list-main">
-									
-										<li>
-											<i class="ti-user"></i>
-											<a href="/enterprise/profile">Mon compte</a>
-										</li>
-										<li>
-											<i class="ti-power-off"></i>
-											<a href="/login">Se connecter</a>
-										</li>
-									</ul>
-								</div>
+								 <div class="right-content">
+                        <ul class="list-main">
+
+                            <form method="post">
+
+
+                                {% if app.user %}
+                                    <div class="mb-3">
+                                        <li><i class="ti-user"></i> <a href="/enterprise/profile">{{ app.user.username }}</a></li>
+                                        <li><i class="ti-power-off"></i> <a href="#"><a href="{{ path('app_logout') }}">Logout</a></a>
+                                        </li>
+                                    </div>
+                                    {% else %}
+                                <li><i class="ti-user"></i> <a href="/login">Mon compte</a></li>
+                                        <li><i class="ti-user"></i> <a href="/register">Creé un compte</a></li>
+
+                                {% endif %}
+
+
+                            </form>
+                        </ul>
+                    </div>
 								<!-- End Top Right -->
 							</div>
 						</div>
 					</div>
-				</div> #}
+				</div> 
 	<!-- End Topbar -->
 		<div class="middle-inner"> <div class="container">
 			<div class="row">
