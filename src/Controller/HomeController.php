@@ -14,16 +14,7 @@ class HomeController extends AbstractController
      */
     public function index(): Response
     {
-        $em = $this->getDoctrine()->getManager();
-        $data = $em->getRepository(Product::class)->findAll();
-        $product = sizeof($data) - 1;
-        return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
-            'slider' => [
-                'price' => $data[$product]->getPrice(),
-                'name' => $data[$product]->getName(),
-                'description' => $data[$product]->getDescription(),
-            ],
-        ]);
+        return $this->redirectToRoute('product_controller2_index');
+
     }
 }

@@ -204,7 +204,4 @@ class Product
         $this->imageFile = $imageFile;
         return $this;
     }
-
-
-
 }

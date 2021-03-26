@@ -4,7 +4,6 @@
 
 {% block body %}
 
-    <a href="{{ path('product_controller2_new') }}">Create new</a>
     <section class="hero-slider">
         <!-- Single Slider -->
         <div class="single-slider">
@@ -79,6 +78,22 @@
     <!-- End Small Banner -->
 
     <!-- Start Product Area -->
+    <div class="jumbotron">
+        <div class="container">
+            {{ form_start(form) }}
+            <div class="form-row">
+                <div class="col">
+                </div>
+                <div class="col">
+                    <button class="btn btn-primary">Rechercher</button>
+                </div>
+
+            </div>
+
+            {{ form_end(form) }}
+
+        </div>
+    </div>
     <div class="product-area section">
         <div class="container">
             <div class="row">
@@ -115,21 +130,11 @@
                                                     <div class="single-product">
                                                         <div class="product-img">
                                                             <a href="{{ path('product_controller2_show_main', {'id': product.id}) }}">
-                                                                <img class="default-img"
-                                                                     src="{{ vich_uploader_asset(product, 'imageFile') | imagine_filter('thumb')  }}" width="550" height="750" alt="{{ product.description }}">
-                                                                <img href="{{ path('product_controller2_show_main', {'id': product.id}) }}" class="hover-img"
-                                                                     src="/images/products/{{ product.filename }}"
-                                                                     alt="#">
+                                                                <img
+                                                                     src="{{ vich_uploader_asset(product, 'imageFile') | imagine_filter('thumb')  }}"  style="height:100%; width: 70%" alt="{{ product.description }}">
+
                                                             </a>
                                                             <div class="button-head">
-                                                                <div class="product-action">
-                                                                    <a data-toggle="modal" data-target="#exampleModal"
-                                                                       title="Quick View" href="{{ path('product_controller2_show_main', {'id': product.id}) }}"><i
-                                                                                class=" ti-eye"></i><span>Quick Shop</span></a>
-                                                                    <a title="Wishlist" href="#"><i
-                                                                                class=" ti-heart "></i><span>Add to Wishlist</span></a>
-
-                                                                </div>
                                                                 <div class="product-action-2">
                                                                     <a title="Add to cart" href="#">Add to cart</a>
                                                                 </div>
@@ -171,38 +176,5 @@
     <br>
     <br>
     <br>
-
-
-    <!-- Start Cowndown Area -->
-    <section class="cown-down">
-        <div class="section-inner ">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-6 col-12 padding-right">
-                        <div class="image">
-                            <img src="https://via.placeholder.com/750x590" alt="#">
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-12 padding-left">
-                        <div class="content">
-                            <div class="heading-block">
-                                <p class="small-title">Deal of day</p>
-                                <h3 class="title">Beatutyful dress for women</h3>
-                                <p class="text">Suspendisse massa leo, vestibulum cursus nulla sit amet, frungilla
-                                    placerat lorem. Cars fermentum, sapien. </p>
-                                <h1 class="price">$1200 <s>$1890</s></h1>
-                                <div class="coming-time">
-                                    <div class="clearfix" data-countdown="2021/02/30"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <br>
-    <br>
-
 
 {% endblock %}

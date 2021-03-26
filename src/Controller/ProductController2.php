@@ -4,9 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Enterprise;
 use App\Entity\Product;
+use App\Entity\ProductSearch;
+use App\Form\ProductSearchType;
 use App\Form\ProductType;
 use App\Repository\EnterpriseRepository;
 use App\Repository\ProductRepository;
+use ContainerGGpvuaY\PaginatorInterface_82dac15;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,12 +22,17 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
  */
 class ProductController2 extends AbstractController
 {
+
     /**
      * @Route("/", name="product_controller2_index", methods={"GET"})
      */
-    public function index(ProductRepository $productRepository): Response
+    public function index(PaginatorInterface $paginator  ,Request $request,ProductRepository $productRepository): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
+        $search = new ProductSearch();
+
+        $form = $this->createForm(ProductSearchType::class,$search);
+        $form ->handleRequest($request);
 
         $query = $entityManager->createQuery(
             'SELECT DISTINCT e.country
@@ -32,8 +41,21 @@ class ProductController2 extends AbstractController
 
         return $this->render('product_controller2/index.html.twig', [
 
+            'products' => $productRepository->findBy(array(),
+                array('price' => 'ASC')
+            ),
+            'countries' => $query->getResult(),
+            'form' => $form ->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/enterprise/products", name="product_controller2_indexx", methods={"GET"})
+     */
+    public function indexx(ProductRepository $productRepository): Response
+    {
+        return $this->render('product_controller2/indexx.html.twig', [
             'products' => $productRepository->findAll(),
-            'countries' => $query->getResult()
         ]);
     }
 
@@ -64,7 +86,10 @@ class ProductController2 extends AbstractController
      */
     public function new(Request $request): Response
     {
+        $userId = $this->getUser();
+
         $product = new Product();
+        $product->setSeller($userId);
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
