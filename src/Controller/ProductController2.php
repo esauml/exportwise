@@ -4,34 +4,103 @@ namespace App\Controller;
 
 use App\Entity\Enterprise;
 use App\Entity\Product;
+use App\Entity\ProductSearch;
+use App\Form\ProductSearchType;
 use App\Form\ProductType;
 use App\Repository\EnterpriseRepository;
 use App\Repository\ProductRepository;
+use ContainerGGpvuaY\PaginatorInterface_82dac15;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 /**
  * @Route("/product/controller2")
  */
 class ProductController2 extends AbstractController
 {
+
     /**
      * @Route("/", name="product_controller2_index", methods={"GET"})
      */
-    public function index(ProductRepository $productRepository): Response
+    public function index(PaginatorInterface $paginator, Request $request, ProductRepository $productRepository): Response
     {
-        // $entityManager = $this->getDoctrine()->getManager();
+        $entityManager = $this->getDoctrine()->getManager();
+        $search = new ProductSearch();
+        $data = $entityManager->getRepository(Product::class)->findAll();
 
-        // $query = $entityManager->createQuery(
-        //     'SELECT DISTINCT e.country
-        //     FROM App\Entity\Enterprise e'
-        // );
+        $form = $this->createForm(ProductSearchType::class, $search);
+        $form->handleRequest($request);
 
-        return $this->render('product_controller2/index.html.twig', [
+        $query = $entityManager->createQuery(
+            'SELECT DISTINCT e.country
+            FROM App\Entity\Enterprise e'
+        );
+        if (sizeof($data) > 0) {
+            $product = sizeof($data) - 1;
+            return $this->render('product_controller2/index.html.twig', [
+                'controller_name' => 'HomeController',
+                'slider' => [
+                    'price' => $data[$product]->getPrice(),
+                    'name' => $data[$product]->getName(),
+                    'description' => $data[$product]->getDescription(),
+                ],
+                'products' => $productRepository->findBy(
+                    array(),
+                    array('price' => 'ASC')
+                ),
+                'countries' => $query->getResult(),
+                'form' => $form->createView()
+            ]);
+        } else {
+            return $this->render('product_controller2/index.html.twig', [
+                'controller_name' => 'HomeController',
+                'slider' => [
+                    'price' => '',
+                    'name' => '',
+                    'description' => '',
+                ],
+                'products' => $productRepository->findBy(
+                    array(),
+                    array('price' => 'ASC')
+                ),
+                'countries' => $query->getResult(),
+                'form' => $form->createView()
+            ]);
+        }
+    }
+  
+    /**
+     * @Route("/enterprise/products", name="product_controller2_indexx", methods={"GET"})
+     */
+    public function indexx(ProductRepository $productRepository): Response
+    {
+        return $this->render('product_controller2/indexx.html.twig', [
             'products' => $productRepository->findAll(),
-            'countries' => [['country' => 'Mx']],
+        ]);
+    }
+
+
+    /**
+     * @Route("/", name="app_login")
+     */
+    public function login(AuthenticationUtils $authenticationUtils): Response
+    {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('home');
+        }
+
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        return $this->render('layouts/header.html.twig', [
+            'last_username' => $lastUsername,
+            'error' => $error,
         ]);
     }
 
@@ -40,7 +109,10 @@ class ProductController2 extends AbstractController
      */
     public function new(Request $request): Response
     {
+        $userId = $this->getUser();
+
         $product = new Product();
+        $product->setSeller($userId);
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
@@ -118,5 +190,4 @@ class ProductController2 extends AbstractController
 
         return $this->redirectToRoute('product_controller2_index');
     }
-
 }

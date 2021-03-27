@@ -42,5 +42,8 @@ security:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/enterprise/*, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/purchase/order/*, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/product/controller2/pp/* , roles: IS_AUTHENTICATED_FULLY }
+        - {path: ^/shopping-cart , roles: IS_AUTHENTICATED_FULLY}
+        - {path: ^/checkout , roles: IS_AUTHENTICATED_FULLY}
         #-{ path:  ^/api/purchase-order/*, roles: ROLE_USER}
-    #- {path:}^
+    #- {path: ^/shopping-cart , roles: IS_AUTHENTICATED_FULLY}^

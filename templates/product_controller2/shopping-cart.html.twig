@@ -131,11 +131,13 @@
       <div class="col mb-2">
         <div class="row">
           <div class="col-sm-12 col-md-6">
-            <button class="btn btn-block btn-light">Continue Shopping</button>
+            <a href="{{ path('product_controller2_index') }}"class="btn btn-block btn-light">
+              <p class="text-white">Continue Shopping</p>
+            </a>
           </div>
           <div class="col-sm-12 col-md-6 text-right">
             <a class="btn btn-lg btn-block btn-success text-uppercase" href="{{ path('checkout') }}">
-              Checkout
+              <p class="text-white">Checkout</p>
             </a>
           </div>
         </div>
@@ -144,7 +146,6 @@
   </div>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script type="text/javascript" src="/js/cwdialog.js"></script>
   <script src="/js/purchase-order.js"></script>
   <script type"javascript">
     function editQuantity(editValue, productId) {

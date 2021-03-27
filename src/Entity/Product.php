@@ -157,6 +157,18 @@ class Product
         return $this;
     }
 
+    public function getUnit(): ?string
+    {
+        return $this->Unit;
+    }
+
+    public function setUnit(string $Unit): self
+    {
+        $this->Unit = $Unit;
+
+        return $this;
+    }
+
     /**
      * @return string|null
      */
@@ -190,28 +202,6 @@ class Product
     public function setImageFile(?File $imageFile): Product
     {
         $this->imageFile = $imageFile;
-        return $this;
-    }
-
-    /**
-     * Get the value of Unit
-     */
-
-    public function getUnit()
-    {
-        return $this->Unit;
-    }
-
-    /**
-     * Set the value of Unit
-     *
-     * @return  self
-     */
-
-    public function setUnit($Unit)
-    {
-        $this->Unit = $Unit;
-
         return $this;
     }
 }

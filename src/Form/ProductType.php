@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function Sodium\add;
 
 class ProductType extends AbstractType
 {
@@ -18,7 +19,7 @@ class ProductType extends AbstractType
             ->add('price')
             ->add('image')
             ->add('status')
-            ->add('seller')
+            ->add('unit')
             ->add('imageFile',FileType::class, [
                 'required' => false
             ])

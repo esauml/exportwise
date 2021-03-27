@@ -1,6 +1,6 @@
 <header class="header shop">
 	<!-- Topbar -->
-	{# <div class="topbar">
+	 <div class="topbar">
 					<div class="container">
 						<div class="row">
 							<div
@@ -20,24 +20,33 @@
 							<div
 								class="col-lg-8 col-md-12 col-12">
 								<!-- Top Right -->
-								<div class="right-content">
-									<ul class="list-main">
-									
-										<li>
-											<i class="ti-user"></i>
-											<a href="/enterprise/profile">Mon compte</a>
-										</li>
-										<li>
-											<i class="ti-power-off"></i>
-											<a href="/login">Se connecter</a>
-										</li>
-									</ul>
-								</div>
+								 <div class="right-content">
+                        <ul class="list-main">
+
+                            <form method="post">
+
+
+                                {% if app.user %}
+                                    <div class="mb-3">
+                                        <li><i class="ti-user"></i> <a href="/enterprise/profile">{{ app.user.username }}</a></li>
+                                        <li><i class="ti-power-off"></i> <a href="#"><a href="{{ path('app_logout') }}">Logout</a></a>
+                                        </li>
+                                    </div>
+                                    {% else %}
+                                <li><i class="ti-user"></i> <a href="/login">Mon compte</a></li>
+                                        <li><i class="ti-user"></i> <a href="/register">Creé un compte</a></li>
+
+                                {% endif %}
+
+
+                            </form>
+                        </ul>
+                    </div>
 								<!-- End Top Right -->
 							</div>
 						</div>
 					</div>
-				</div> #}
+				</div> 
 	<!-- End Topbar -->
 		<div class="middle-inner"> <div class="container">
 			<div class="row">
@@ -45,7 +54,7 @@
 					class="col-lg-2 col-md-2 col-12">
 					<!-- Logo -->
 					<div class="logo">
-						<a href="/"><img src="/images/logo.png" alt="logo"/></a>
+						<a href="/"><img src="/images/logor.png" alt="logo"/></a>
 					</div>
 					<!-- / End Logo -->
 					<!-- Search Form -->
@@ -120,12 +129,12 @@
 						{% endif %}
 						{% if app.user %}
 							<div class="sinlge-bar shopping">
-								<a href="#" class="single-icon">
+								<a href="{{ path('shopping_cart') }}" class="single-icon">
 									<i class="ti-bag"></i>
-									<span class="total-count">2</span>
+									<span class="total-count"></span>
 								</a>
 								<!-- Shopping Item -->
-								<div class="shopping-item">
+								<!--<div class="shopping-item">
 									<div class="dropdown-cart-header">{#  <span>2 Items</span> #}
 										{#  <a href="#">View Cart</a> #}
 									</div>
@@ -138,7 +147,7 @@
 										</div>
 										<a href="/checkout" class="btn animate">Checkout</a>
 									</div>
-								</div>
+								</div>-->
 							{% endif %}
 							<!-- / End Shopping Item -->
 						</div>
@@ -166,14 +175,12 @@
 											<li>
 												<a href="#">Products</a>
 												<ul class="dropdown">
+													
 													<li>
-														<a href="shop-grid.html">Shop Grid</a>
+														<a href="{{ path('shopping_cart') }}">Cart</a>
 													</li>
 													<li>
-														<a href="cart.html">Cart</a>
-													</li>
-													<li>
-														<a href="checkout.html">Checkout</a>
+														<a href="{{ path('checkout') }}">Checkout</a>
 													</li>
 												</ul>
 											</li>
